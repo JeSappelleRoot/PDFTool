@@ -26,36 +26,56 @@ def displayBanner():
 def mergerTool(src, dst):
 # Simple function to merge pdf files together
 
-    # Simple error checking on source and destination folder
-    if not os.path.exists(src):
-        print("[!] Source folder does not exist !")
-        # exit()
-    elif not os.path.exists(dst):
-        print("[!] Destination folder does not exist !")
-        # exit()
+    try:
 
-    # Get all PDF files in source path
-    allPDF = glob.glob(f"{src}/*.pdf")
-    # If pdfFiles array is empty (no PDF detected), return an error message
-    if not allPDF:
-        print("[!] Not PDF files detected in source directory")
-        print(f"[!] Check your source path : {src}")
-        # exit()
-    # Else if pdfFiles array got only one element (one PDF find)
-    elif len(allPDF) == 1:
-        print("[!] Cannot merge one PDF file to one PDF...")
-        print("[!] Use your mind and add more PDF files")
-        # exit()
+        # Simple error checking on source and destination folder
+        if not os.path.exists(src):
+            print("[!] Source folder does not exist !")
+            # exit()
+            return
+        elif  os.path.exists(dst):
+            print("[!] Destination file already exist !")
+            print("[!] Rename it or suppress it before next launch")
+            # exit()
+            return
+        # Error checking for output file extension (need a PDF extension)
+        elif os.path.splitext(dst)[1] != '.pdf':
+            print("[!] Destination file extension is not valid !")
+            print("[!] Please use a PDF valid extension")
+            # exit()
+            return
 
-    # Initialize the merging
-    pdfMerger = PdfFileMerger()
-    # Loop to get all PDF files
-    for pdf in allPDF:
-        pdfMerger.append(pdf)
-    # Finally write the final PDF
-    pdfMerger.write(f"{destination}/output.pdf")
-    # Close the merger
-    pdfMerger.close()
+        # Get all PDF files in source path
+        allPDF = glob.glob(f"{src}/*.pdf")
+        # If pdfFiles array is empty (no PDF detected), return an error message
+        if not allPDF:
+            print("[!] Not PDF files detected in source directory")
+            print(f"[!] Check your source path : {src}")
+            # exit()
+        # Else if pdfFiles array got only one element (one PDF find)
+        elif len(allPDF) == 1:
+            print("[!] Cannot merge one PDF file to one PDF...")
+            print("[!] Use your mind and add more PDF files")
+            # exit()
+
+        # Initialize the merger
+        pdfMerger = PdfFileMerger()
+        # Loop to get all PDF files and add
+        for pdf in allPDF:
+            # Get PDF basename (because fullname in each loop can be too much)
+            pdfBaseName = os.path.basename(pdf)
+            print(f"[+] Adding [{pdfBaseName}] for merging")
+            pdfMerger.append(pdf)
+
+        # Finally write the final PDF to output.pdf file in destination folder
+        with open(f"{destination}",'wb') as finalPDF:
+            pdfMerger.write(finalPDF)
+
+    # Get exception
+    except Exception as error:
+        print("\n[!] An error occured during merging :")
+        print(f"{error}")
+
 
 
     return
@@ -69,9 +89,13 @@ def mergerTool(src, dst):
 # ======================== Main section ========================
 # ==============================================================
 
+# Ideas from https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
+
+
+
 # Define somes variables
-source = r'~/Downloads/sources'
-destination = r'~/Downloads/destination'
+source = r'/home/scratch/Downloads/sources'
+destination = r'/home/scratch/Downloads/destination/output.pdf'
 
 displayBanner()
 
