@@ -1,8 +1,8 @@
 # =========================== Import Section ===========================
-from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
-import glob
 import os
-
+import glob
+import argparse
+from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 
 # -------------------------------------------------> displayBanner
 def displayBanner():
@@ -22,6 +22,21 @@ def displayBanner():
     """)
     return
 
+# -------------------------------------------------> checkPdf
+def checkPDF(pdf):
+# A little function to check if PDF file is Invalid
+# Based only on the capacity of PyPDF2 to correctly open the file passed in argument
+# May be a poor method...
+    try:
+        # Open pdf
+        with open(pdf,'rb') as file:
+            # Test the reading capacity
+            openPdf = PdfFileReader(file)
+            return True
+    # Except reading error
+    except Exception as error:
+        return False
+
 # -------------------------------------------------> PDF merger function
 def mergerTool(src, dst):
 # Simple function to merge pdf files together
@@ -36,13 +51,11 @@ def mergerTool(src, dst):
         elif  os.path.exists(dst):
             print("[!] Destination file already exist !")
             print("[!] Rename it or suppress it before next launch")
-            # exit()
             return
         # Error checking for output file extension (need a PDF extension)
         elif os.path.splitext(dst)[1] != '.pdf':
             print("[!] Destination file extension is not valid !")
             print("[!] Please use a PDF valid extension")
-            # exit()
             return
 
         # Get all PDF files in source path
@@ -51,12 +64,12 @@ def mergerTool(src, dst):
         if not allPDF:
             print("[!] Not PDF files detected in source directory")
             print(f"[!] Check your source path : {src}")
-            # exit()
+            return
         # Else if pdfFiles array got only one element (one PDF find)
         elif len(allPDF) == 1:
             print("[!] Cannot merge one PDF file to one PDF...")
             print("[!] Use your mind and add more PDF files")
-            # exit()
+            return
 
         # Initialize the merger
         pdfMerger = PdfFileMerger()
@@ -89,14 +102,22 @@ def mergerTool(src, dst):
 # ======================== Main section ========================
 # ==============================================================
 
-# Ideas from https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
+# Ideas from :
+# - https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
+# - https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
 
+
+# ================= Arg Parse section =================
+argParser = argparse.ArgumentParser()
 
 
 # Define somes variables
 source = r'/home/scratch/Downloads/sources'
 destination = r'/home/scratch/Downloads/destination/output.pdf'
+file = r'/home/scratch/Downloads/sources/Deploiement.pdf'
 
-displayBanner()
+#displayBanner()
 
-mergerTool(source,destination)
+checkPDF(file)
+
+#mergerTool(source,destination)
