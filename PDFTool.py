@@ -180,18 +180,21 @@ def getInfo(file,output):
 # Define somes variables
 source = r'/home/scratch/Downloads/sources'
 destination = r'/home/scratch/Downloads/destination/output.pdf'
-folder = r'/home/scratch/Downloads/sources/'
-output = r'/home/scratch/Downloads/destination/output.txt'
+
 #displayBanner()
 #mergerTool(source,destination)
 #checkPDF(file)
 
 
-#output = 'console'
-levelInfo = 1
+# ================ Test getInfo function ================
+#getInfoSRCFOLDER = r'/home/scratch/Downloads/sources/'
+#getInfoSINGLEFILE = r'/home/scratch/Downloads/sources/file.pdf'
+#getInfoFILEOUTPUT = r'/home/scratch/Downloads/destination/output.txt'
+#getInfoCONSOLEOUTPUT = 'console'
 
-
-if os.path.isdir(folder):
-    for file in glob.glob(f"{folder}/*.pdf"):
-        #print(file)
-        getInfo(file, output)
+#if os.path.isdir(folder):
+#    for file in glob.glob(f"{folder}/*.pdf"):
+#        print(file)
+#        getInfo(file, output)
+#else:
+#    getinfo(file,output)
