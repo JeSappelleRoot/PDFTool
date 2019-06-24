@@ -38,6 +38,7 @@ The output file must be a valid PDF file (with the right extension).
 Usage examples :  
 `PDFTool.py -merge --mergeIn /home/Doe/folderContainPDF --mergeOut /home/Doe/result.pdf`  
 
+
 ## About splitting
 
 PDFTool can split a specific page of a PDF file. You can also use the keyword `all` to specify at PDFTool you want to extract all pages in single PDF.
