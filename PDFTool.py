@@ -104,7 +104,7 @@ def getInfo(file):
         print(f"Creator : {info.creator}")
         print(f"Producer : {info.producer}")
         print(f"Creation date : {splitInfo[6]}")
-        
+
 
 
 
