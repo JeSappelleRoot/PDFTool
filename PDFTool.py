@@ -23,23 +23,23 @@ def displayBanner():
     return
 
 # -------------------------------------------------> checkPdf
-def checkPDF(pdf):
+def checkPDF(file):
 # A little function to check if PDF file is Invalid
 # Based only on the capacity of PyPDF2 to correctly open the file passed in argument
 # May be a poor method...
 # Added check extension first
     try:
         # Get extension and basename of given file in argument
-        fileExtension = os.path.splitext(pdf)[1]
-        baseName = os.path.basename(pdf)
+        fileExtension = os.path.splitext(file)[1]
+        baseName = os.path.basename(file)
         # Simple extension check
         if fileExtension != '.pdf':
             return 'extensionNONOK'
         else:
             # Open pdf for testing correct reading
-            with open(pdf,'rb') as file:
+            with open(file,'rb') as stream:
                 # Test the reading capacity
-                openPdf = PdfFileReader(file)
+                openPdf = PdfFileReader(stream)
                 return 'pdfOK'
     # Except reading error
     except Exception as error:
@@ -69,8 +69,9 @@ def mergerTool(src, dst):
         for pdf in allPDF:
             # Get PDF basename (because fullname in each loop can be too much)
             pdfBaseName = os.path.basename(pdf)
-            print(f"[+] Adding [{pdfBaseName}] for merging")
-            pdfMerger.append(pdf)
+            if checkPDF(pdf) == 'pdfOK':
+                print(f"[+] Adding [{pdfBaseName}] for merging")
+                pdfMerger.append(pdf)
 
         # Finally write the final PDF to output.pdf file in destination folder
         with open(f"{destination}",'wb') as finalPDF:
@@ -81,10 +82,41 @@ def mergerTool(src, dst):
         print("\n[!] An error occured during merging :")
         print(f"{error}")
 
-
-
     return
 
+# -------------------------------------------------> getInfo
+def getInfo(file):
+    try:
+        with open(file,'rb') as stream:
+            readPdf = PdfFileReader(stream)
+            info = readPdf.getDocumentInfo()
+            nbPage = readPdf.getNumPages()
+
+        #print(info)
+        splitInfo = str(info).split(',')
+        extractCreationDate = splitInfo[0]
+        print(extractCreationDate)
+
+
+        print(f"Author : {info.author}")
+        print(f"Title : {info.title}")
+        print(f"Subject : {info.subject}")
+        print(f"Creator : {info.creator}")
+        print(f"Producer : {info.producer}")
+        print(f"Creation date : {splitInfo[6]}")
+
+
+
+
+
+
+        return
+
+
+    except Exception as error:
+        print(f"An error occured during get information : ")
+        print(f"{error}")
+        return
 
 
 
@@ -97,10 +129,11 @@ def mergerTool(src, dst):
 # Ideas from :
 # - https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
 # - https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
+# - http://www.blog.pythonlibrary.org/2018/04/10/extracting-pdf-metadata-and-text-with-python/
 
 
 # ================= Arg Parse section =================
-argParser = argparse.ArgumentParser()
+
 
 
 # Define somes variables
@@ -109,6 +142,10 @@ destination = r'/home/scratch/Downloads/destination/output.pdf'
 file = r'/home/scratch/Downloads/sources/Deploiement.pdf'
 
 #displayBanner()
-checkPDF(file)
-
 #mergerTool(source,destination)
+#checkPDF(file)
+
+
+
+levelInfo = 1
+getInfo(file)
