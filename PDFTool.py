@@ -118,9 +118,20 @@ def getInfo(file):
             # Add key and value in the dictionnary
             infoArray[key] = value
 
+        # Add a best output with an header
+        header = f"Informations about {os.path.basename(file)}"
+        print(header)
+        # Repeat a char to have a separator
+        print('=' * len(header))
         # Finally display the content of the dictionnary
         for key in infoArray.keys():
             print(f"{key} {infoArray[key]}")
+        # Define a footer section
+        footer = f"Total number of pages in document : {nbPage}"
+        print(footer)
+        # Repeat a char to have a separator in case of multi files
+        print('-' * len(footer))
+
 
     # Catch a possible error...
     except Exception as error:
