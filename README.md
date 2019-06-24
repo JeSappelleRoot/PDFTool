@@ -2,7 +2,7 @@
 # Table of content
 
 * [PDFTool](#PDFTool)
-* [Requirements](##Requirements)  
+* [Requirements](##Requirements)
 * [Requirements file](###Requirements file)  
 * [About functionalities of PDFTool](#About functionalities of PDFTool)  
 * [About merging](##About merging)  
