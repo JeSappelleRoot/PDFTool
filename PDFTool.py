@@ -130,24 +130,29 @@ def getInfo(file,output):
         # Default behaviour, display directly in console
         if output == 'console':
 
+            # Print header and separator
             print(header)
             print(topSeparator)
-            # Finally display the content of the dictionnary
+            # Finally display the content of the dictionnary (keys and values)
             for key in infoArray.keys():
                 print(f"{key} {infoArray[key]}")
+            # Print the footer and the bottom separator (with 2 new lines)
             print(footer)
-            print(bottomSeparator)
+            print(f"{bottomSeparator}\n\n")
 
+        # Else if the command line indicate the output is in a log file
         elif output != 'console':
-            with open(output,'w') as stream:
+            # With statement to open a file, in append mode (in case of multi PDF file)
+            with open(output,'a') as stream:
+                # Write header and top separator
                 stream.write(f"{header}\n")
                 stream.write(f"{topSeparator}\n")
+                # Loop on the dictionnary to get keys and values
                 for key in infoArray.keys():
                     stream.write(f"{key} {infoArray[key]}\n")
+                # Finally write the footer and the bottom separator
                 stream.write(f"{footer}\n")
-                stream.write(f"{bottomSeparator}\n")
-
-
+                stream.write(f"{bottomSeparator}\n\n")
 
     # Catch a possible error...
     except Exception as error:
@@ -175,13 +180,18 @@ def getInfo(file,output):
 # Define somes variables
 source = r'/home/scratch/Downloads/sources'
 destination = r'/home/scratch/Downloads/destination/output.pdf'
-file = r'/home/scratch/Downloads/sources/Deploiement.pdf'
-#output = r'/home/scratch/Downloads/destination/output.txt'
+folder = r'/home/scratch/Downloads/sources/'
+output = r'/home/scratch/Downloads/destination/output.txt'
 #displayBanner()
 #mergerTool(source,destination)
 #checkPDF(file)
 
 
-output = 'console'
+#output = 'console'
 levelInfo = 1
-getInfo(file, output)
+
+
+if os.path.isdir(folder):
+    for file in glob.glob(f"{folder}/*.pdf"):
+        #print(file)
+        getInfo(file, output)
