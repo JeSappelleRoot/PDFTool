@@ -52,3 +52,37 @@ Usage examples :
 ## About extraction
 
 ## About getting info
+
+PDFTool can extract information about a PDF file.  
+PyPDF2 module with PdfFileReader give `getDocumentInfo()` method. We can use it to extract many informations like :  
+- Author
+- Title
+- Producer
+- ...
+
+But this method seems to be incomplete. So, with a dictionnary we can get all infos about a document.
+
+Usage examples :
+- Get info about a single file and dump the result to a TXT file  
+`PDFTool.py -info --infoIn /home/Doe/file.pdf --infoOut /home/Doe/infos.txt`  
+- Get info about multiple files in a directory and display it in the console  
+`PDFTool.py -info --infoIn /home/Doe/files/ --infoOut console`
+
+Example of console output for a single file :
+```
+Informations about file.pdf
+==================================
+Author ?
+Title ?
+Subject ?
+Creator : 'LaTeX with hyperref'
+Producer : 'pdfTeX-1.40.19'
+Keywords ?
+CreationDate : "D:20190212124237+01'00'"
+ModDate : "D:20190212124237+01'00'"
+Trapped : '/False'
+PTEX : 'This is pdfTeX
+Version ?
+Total number of pages in document : 12
+--------------------------------------
+```
