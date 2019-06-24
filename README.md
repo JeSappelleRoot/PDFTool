@@ -11,7 +11,7 @@ Table of Contents
       * [About extraction](#about-extraction)
       * [About getting info](#about-getting-info)
 
-> Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
+> Table of contents created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 
 
