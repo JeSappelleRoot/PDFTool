@@ -1,5 +1,6 @@
 # =========================== Import Section ===========================
 import os
+import re
 import glob
 import argparse
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
@@ -86,40 +87,48 @@ def mergerTool(src, dst):
 
 # -------------------------------------------------> getInfo
 def getInfo(file):
+# Simple function to get info about a PDF file
+# The method getDocumentInfo does'nt give all informations
+# So, with a dictionnary, we can fix it an we can be sure to get all info !
+
     try:
+        # Open file given in argument in RB mode
         with open(file,'rb') as stream:
+            # Read file with PdfFileReader
             readPdf = PdfFileReader(stream)
-            info = readPdf.getDocumentInfo()
+            # Get all info about the document
+            allInfo = str(readPdf.getDocumentInfo())
+            # Get the number of page...can be usefull
             nbPage = readPdf.getNumPages()
 
-        #print(info)
-        splitInfo = str(info).split(',')
-        extractCreationDate = splitInfo[0]
-        print(extractCreationDate)
+        # Initialization of an empty dictionnary
+        infoArray = {}
+        # Process to a loop with multi split
+        # This first split get the title of information and the value (Author and the given name)
+        for info in allInfo.split(','):
+            # This second split give the title of the information (Author, Title...)
+            reference = info.split(':')[0]
+            # With a regex, we extract only text (exclude [], /, quotes...)
+            key = str(re.findall('\w+', reference)[0])
+            # Finally, replace the second split by nothing, to get the opposit
+            value = info.replace(reference,"")
+            # Add condition if the value is empty (equal to : '' due to the extraction method...)
+            if value == r": ''" or not value:
+                value = '?'
+            # Add key and value in the dictionnary
+            infoArray[key] = value
 
+        # Finally display the content of the dictionnary
+        for key in infoArray.keys():
+            print(f"{key} {infoArray[key]}")
 
-        print(f"Author : {info.author}")
-        print(f"Title : {info.title}")
-        print(f"Subject : {info.subject}")
-        print(f"Creator : {info.creator}")
-        print(f"Producer : {info.producer}")
-        print(f"Creation date : {splitInfo[6]}")
-
-
-
-
-
-
-        return
-
-
+    # Catch a possible error...
     except Exception as error:
-        print(f"An error occured during get information : ")
+        print(f"[!] An error occured during get information : ")
         print(f"{error}")
         return
 
-
-
+    return
 
 
 # ==============================================================
