@@ -1,3 +1,18 @@
+
+# Table of content
+
+[PDFTool](# PDFTool)  
+[Requirements](## Requirements)  
+[Requirements file](### Requirements file)  
+[About functionalities of PDFTool](# About functionalities of PDFTool)  
+[About merging](## About merging)  
+[About splitting](## About splitting)  
+[About extraction](## About extraction)
+[About getting info](## About getting info)  
+
+
+
+
 # PDFTool
 
 
