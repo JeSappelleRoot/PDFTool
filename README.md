@@ -68,7 +68,7 @@ Usage examples :
 - Get info about multiple files in a directory and display it in the console  
 `PDFTool.py -info --infoIn /home/Doe/files/ --infoOut console`
 
-** By default, the `-info` functionnality make the output directly in the console **
+**By default, the `-info` functionnality make the output directly in the console**
 
 
 Example of console output for a single file :
