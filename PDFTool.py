@@ -50,22 +50,6 @@ def mergerTool(src, dst):
 # Simple function to merge pdf files together
 
     try:
-
-        # Simple error checking on source and destination folder
-        if not os.path.exists(src):
-            print("[!] Source folder does not exist !")
-            # exit()
-            return
-        elif  os.path.exists(dst):
-            print("[!] Destination file already exist !")
-            print("[!] Rename it or suppress it before next launch")
-            return
-        # Error checking for output file extension (need a PDF extension)
-        elif os.path.splitext(dst)[1] != '.pdf':
-            print("[!] Destination file extension is not valid !")
-            print("[!] Please use a PDF valid extension")
-            return
-
         # Get all PDF files in source path
         allPDF = glob.glob(f"{src}/*.pdf")
         # If pdfFiles array is empty (no PDF detected), return an error message
