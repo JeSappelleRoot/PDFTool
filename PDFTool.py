@@ -27,12 +27,20 @@ def checkPDF(pdf):
 # A little function to check if PDF file is Invalid
 # Based only on the capacity of PyPDF2 to correctly open the file passed in argument
 # May be a poor method...
+# Added check extension first
     try:
-        # Open pdf
-        with open(pdf,'rb') as file:
-            # Test the reading capacity
-            openPdf = PdfFileReader(file)
-            return True
+        # Get extension and basename of given file in argument
+        fileExtension = os.path.splitext(pdf)[1]
+        baseName = os.path.basename(pdf)
+        # Simple extension check
+        if fileExtension != '.pdf':
+            return 'extensionNONOK'
+        else:
+            # Open pdf for testing correct reading
+            with open(pdf,'rb') as file:
+                # Test the reading capacity
+                openPdf = PdfFileReader(file)
+                return 'pdfOK'
     # Except reading error
     except Exception as error:
         return False
@@ -117,7 +125,6 @@ destination = r'/home/scratch/Downloads/destination/output.pdf'
 file = r'/home/scratch/Downloads/sources/Deploiement.pdf'
 
 #displayBanner()
-
 checkPDF(file)
 
 #mergerTool(source,destination)
