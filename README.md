@@ -1,4 +1,4 @@
-## PDFTool
+# PDFTool
 
 
 PDFTool is a simple tool to manage pdf files, write in Python 3. You can :   
@@ -22,6 +22,9 @@ PDFTool use the following python modules :
 ```
 PyPDF2==1.26.0
 ```
+Just run `pip3 install -r requirements.txt` to get all modules needed by PDFTool
+
+# About functionalities of PDFTool
 
 ## About merging
 
@@ -74,7 +77,7 @@ Usage examples :
 - Get info about multiple files in a directory and display it in the console  
 `PDFTool.py -info --infoIn /home/Doe/files/`
 
-**By default, the `-info` functionnality make the output directly in the console**
+**By default, the `-info` functionality make the output directly in the console**
 
 
 Example of console output for a single file :
