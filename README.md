@@ -36,8 +36,7 @@ The output file must be a valid PDF file (with the right extension).
 **Be sure your files are sorted and organized. PDFTool will merge files successively, in alphabetical order**
 
 Usage examples :  
-`PDFTool.py -merge --mergeIn /home/Doe/folderContainPDF --mergeOut /home/Doe/result.pdf`  
-
+`PDFTool.py -merge --mergeIn /home/Doe/folderContainPDF --mergeOut /home/Doe/result.pdf`
 
 ## About splitting  
 
