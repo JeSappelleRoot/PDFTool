@@ -86,7 +86,7 @@ def mergerTool(src, dst):
     return
 
 # -------------------------------------------------> getInfo
-def getInfo(file):
+def getInfo(file,output):
 # Simple function to get info about a PDF file
 # The method getDocumentInfo does'nt give all informations
 # So, with a dictionnary, we can fix it an we can be sure to get all info !
@@ -120,17 +120,33 @@ def getInfo(file):
 
         # Add a best output with an header
         header = f"Informations about {os.path.basename(file)}"
-        print(header)
         # Repeat a char to have a separator
-        print('=' * len(header))
-        # Finally display the content of the dictionnary
-        for key in infoArray.keys():
-            print(f"{key} {infoArray[key]}")
+        topSeparator = '=' * len(header)
         # Define a footer section
         footer = f"Total number of pages in document : {nbPage}"
-        print(footer)
         # Repeat a char to have a separator in case of multi files
-        print('-' * len(footer))
+        bottomSeparator = '-' * len(footer)
+
+        # Default behaviour, display directly in console
+        if output == 'console':
+
+            print(header)
+            print(topSeparator)
+            # Finally display the content of the dictionnary
+            for key in infoArray.keys():
+                print(f"{key} {infoArray[key]}")
+            print(footer)
+            print(bottomSeparator)
+
+        elif output != 'console':
+            with open(output,'w') as stream:
+                stream.write(f"{header}\n")
+                stream.write(f"{topSeparator}\n")
+                for key in infoArray.keys():
+                    stream.write(f"{key} {infoArray[key]}\n")
+                stream.write(f"{footer}\n")
+                stream.write(f"{bottomSeparator}\n")
+
 
 
     # Catch a possible error...
@@ -160,12 +176,12 @@ def getInfo(file):
 source = r'/home/scratch/Downloads/sources'
 destination = r'/home/scratch/Downloads/destination/output.pdf'
 file = r'/home/scratch/Downloads/sources/Deploiement.pdf'
-
+#output = r'/home/scratch/Downloads/destination/output.txt'
 #displayBanner()
 #mergerTool(source,destination)
 #checkPDF(file)
 
 
-
+output = 'console'
 levelInfo = 1
-getInfo(file)
+getInfo(file, output)
