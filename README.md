@@ -66,7 +66,7 @@ Usage examples :
 - Get info about a single file and dump the result to a TXT file  
 `PDFTool.py -info --infoIn /home/Doe/file.pdf --infoOut /home/Doe/infos.txt`  
 - Get info about multiple files in a directory and display it in the console  
-`PDFTool.py -info --infoIn /home/Doe/files/ --infoOut console`
+`PDFTool.py -info --infoIn /home/Doe/files/`
 
 **By default, the `-info` functionnality make the output directly in the console**
 
