@@ -1,7 +1,7 @@
 
 # Table of content
 
-*[PDFTool] (# PDFTool)  
+* [PDFTool](# PDFTool)  
 *[Requirements](## Requirements)  
 *[Requirements file](### Requirements file)  
 *[About functionalities of PDFTool](# About functionalities of PDFTool)  
