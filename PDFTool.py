@@ -179,7 +179,7 @@ def splitFile(file,outSplit,page):
             nameOut = f"Page_{page}.pdf"
 
             # Finally write the output file in the output folder
-            with open(f"{outSplit}/{nameOut}.pdf", 'wb') as streamOut:
+            with open(f"{outSplit}/{nameOut}", 'wb') as streamOut:
                 pdfWriter.write(streamOut)
 
     # Except a possible error...
@@ -227,7 +227,14 @@ def splitFile(file,outSplit,page):
 #    getinfo(file,output)
 
 # ================ Test splitFile function ================
-inputFile = r'/home/scratch/Downloads/sources/file.pdf'
-page = 2
-outputFolder = r'/home/scratch/Downloads/destination'
-splitFile(inputFile, outputFolder, page)
+#inputFile = r'/home/scratch/Downloads/sources/file.pdf'
+#outputFolder = r'/home/scratch/Downloads/destination'
+#page = 'all'
+#page = 2
+
+#if page == 'all':
+#    readPdf = PdfFileReader(inputFile)
+#    for page in range(1,readPdf.getNumPages() + 1):
+#        splitFile(inputFile, outputFolder, page)
+#else:
+#    splitFile(inputFile,outputFolder,page)
