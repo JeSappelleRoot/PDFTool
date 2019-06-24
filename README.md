@@ -38,15 +38,21 @@ Usage examples :
 
 ## About splitting  
 
-PDFTool can split a specific page of a PDF file. You can also use the word `all` to specify at PDFTool you want to extract all pages in single PDF.
+PDFTool can split a specific page of a PDF file. You can also use the keyword `all` to specify at PDFTool you want to extract all pages in single PDF.
 
 Usage examples :   
-- Split the 3th page of a document  
-`PDFTool.py -split --splitIn /home/Doe/file.pdf --splitOut /home/Doe/splitted.pdf --num 3`
+- Split and extract the 3th page of a document  
+`PDFTool.py -split --splitIn /home/Doe/file.pdf --splitOut /home/Doe/resultFolder/ --num 3`
 - Split all pages of a document  
 `PDFTool.py -split --splitIn /home/Doe/file.pdf --splitOut /home/Doe/resultFolder/ --num all`
 
-**If you want to split all pages of a PDF files, `--splitOut` argument must be a folder destination, PDFTool create a PDF for each pages**
+PDFTool will automaticly named the extract page by number of the needed page :   
+-Page_2.pdf for the 2nd page  
+-Page_5.pdf for the 5th page  
+**Easy Peasy !**
+
+**The `--splitOut` argument must be a destination folder**
+**The split function can't work with entire folder, which contains multiple PDF files**
 
 
 ## About extraction
