@@ -162,6 +162,33 @@ def getInfo(file,output):
 
     return
 
+# -------------------------------------------------> splitFile
+def splitFile(file,outSplit,page):
+# Simple function to extract a specific page of a PDF file
+    try:
+
+        # Open input file in reading mode
+        with open(f"{file}", 'rb') as streamIn:
+
+            # Initialize reader and writer
+            pdfReader = PdfFileReader(streamIn)
+            pdfWriter = PdfFileWriter()
+            # Read needed page (-1 because number begin at 0...like an index...)
+            pdfWriter.addPage(pdfReader.getPage(page-1))
+            # Define a name for outfile, based of the page number
+            nameOut = f"Page_{page}.pdf"
+
+            # Finally write the output file in the output folder
+            with open(f"{outSplit}/{nameOut}.pdf", 'wb') as streamOut:
+                pdfWriter.write(streamOut)
+
+    # Except a possible error...
+    except Exception as error:
+        print(f"An error occured when splitting {os.path.basename(file)} :")
+        print("{error}")
+
+    return
+
 
 # ==============================================================
 # ======================== Main section ========================
@@ -178,8 +205,8 @@ def getInfo(file,output):
 
 
 # Define somes variables
-source = r'/home/scratch/Downloads/sources'
-destination = r'/home/scratch/Downloads/destination/output.pdf'
+#source = r'/home/scratch/Downloads/sources'
+#destination = r'/home/scratch/Downloads/destination/output.pdf'
 
 #displayBanner()
 #mergerTool(source,destination)
@@ -198,3 +225,9 @@ destination = r'/home/scratch/Downloads/destination/output.pdf'
 #        getInfo(file, output)
 #else:
 #    getinfo(file,output)
+
+# ================ Test splitFile function ================
+inputFile = r'/home/scratch/Downloads/sources/file.pdf'
+page = 2
+outputFolder = r'/home/scratch/Downloads/destination'
+splitFile(inputFile, outputFolder, page)
