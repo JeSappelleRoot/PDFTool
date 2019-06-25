@@ -190,6 +190,31 @@ def splitFile(file,outSplit,page):
     return
 
 
+# -------------------------------------------------> checkInputFile
+def checkInputFile(file):
+# Simple function to check if an input file exist
+# Used in all functionality of the script
+
+    if not os.path.isfile(file):
+        print(f"[!] The file {file} does'nt exist")
+        print(f"[!] Check your path")
+        return False
+    elif os.path.isfile(file):
+        return True
+
+# -------------------------------------------------> checkOutputFolder
+def checkOutputFolder(path):
+# Simple function to check if an output folder (in argument) exist
+# Used to check an output directory before processing
+
+    if not os.path.isdir(path):
+        print(f"[!] The directory {path} does'nt exist")
+        print(f"[!] Check your path")
+        return False
+    elif os.path.isdir(path):
+        return True
+
+
 # ==============================================================
 # ======================== Main section ========================
 # ==============================================================
