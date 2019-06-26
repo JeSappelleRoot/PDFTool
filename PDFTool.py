@@ -27,7 +27,6 @@ def displayBanner():
 def checkPDF(file):
 # A little function to check if PDF file is Invalid
 # Based only on the capacity of PyPDF2 to correctly open the file passed in argument
-# May be a poor method...
 # Added check extension first
     try:
         # Get extension and basename of given file in argument
@@ -84,6 +83,7 @@ def mergerTool(src, dst):
         print(f"{error}")
 
     return
+
 
 # -------------------------------------------------> getInfo
 def getInfo(file,output):
@@ -213,6 +213,15 @@ def checkOutputFolder(path):
         return False
     elif os.path.isdir(path):
         return True
+
+# -------------------------------------------------> extractText
+def extractText(file,output):
+
+
+
+
+
+    return
 
 
 # ==============================================================
