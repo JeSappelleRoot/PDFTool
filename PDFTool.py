@@ -191,30 +191,6 @@ def splitFile(file,outSplit,page):
     return
 
 
-# -------------------------------------------------> checkInputFile
-def checkInputFile(file):
-# Simple function to check if an input file exist
-# Used in all functionality of the script
-
-    if not os.path.isfile(file):
-        print(f"[!] The file {file} does'nt exist")
-        print(f"[!] Check your path")
-        return False
-    elif os.path.isfile(file):
-        return True
-
-# -------------------------------------------------> checkOutputFolder
-def checkOutputFolder(path):
-# Simple function to check if an output folder (in argument) exist
-# Used to check an output directory before processing
-
-    if not os.path.isdir(path):
-        print(f"[!] The directory {path} does'nt exist")
-        print(f"[!] Check your path")
-        return False
-    elif os.path.isdir(path):
-        return True
-
 # -------------------------------------------------> extractImg
 def extractImg(file,output):
 # Function to extract images from a PDF file
@@ -247,6 +223,62 @@ def extractImg(file,output):
     return
 
 
+# -------------------------------------------------> extractText
+def extractText(file,out):
+# Function to extract all text from a PDF file
+# The result can't work very well
+# Depend of the PDF construction
+
+    # Get the baseName (without the extension)
+    baseName = (os.path.basename(file)).split('.')[0]
+
+    # Open the PDF file with fitz
+    pdf = fitz.open(file)
+    # Loop in all page with a range
+    for num in range(len(pdf)):
+        # Load the page n° num
+        page = pdf.loadPage(num)
+        # Get text of this page
+        text = page.getText()
+        # Open the output file, in append mode
+        with open(f"{out}/{baseName}.txt", 'a') as output:
+            # Define a header to know from where the text is extract
+            header = f"========================================== From page {num + 1} ==========================================\n"
+            # Write header first
+            output.write(header)
+            # Finally write the text of the page in the ouput file
+            output.write(text)
+
+    return
+
+
+
+# -------------------------------------------------> checkInputFile
+def checkInputFile(file):
+# Simple function to check if an input file exist
+# Used in all functionality of the script
+
+    if not os.path.isfile(file):
+        print(f"[!] The file {file} does'nt exist")
+        print(f"[!] Check your path")
+        return False
+    elif os.path.isfile(file):
+        return True
+
+# -------------------------------------------------> checkOutputFolder
+def checkOutputFolder(path):
+# Simple function to check if an output folder (in argument) exist
+# Used to check an output directory before processing
+
+    if not os.path.isdir(path):
+        print(f"[!] The directory {path} does'nt exist")
+        print(f"[!] Check your path")
+        return False
+    elif os.path.isdir(path):
+        return True
+
+
+
 # ==============================================================
 # ======================== Main section ========================
 # ==============================================================
@@ -256,6 +288,7 @@ def extractImg(file,output):
 # - https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
 # - http://www.blog.pythonlibrary.org/2018/04/10/extracting-pdf-metadata-and-text-with-python/
 # - https://stackoverflow.com/questions/2693820/extract-images-from-pdf-without-resampling-in-python (post 15)
+# - https://pymupdf.readthedocs.io/en/latest/tutorial/
 
 
 # ================= Arg Parse section =================
