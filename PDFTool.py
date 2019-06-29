@@ -283,6 +283,9 @@ def checkOutputFolder(path):
 # ======================== Main section ========================
 # ==============================================================
 
+# With a banner, it's a better ! ><))))°>
+displayBanner()
+
 # Ideas from :
 # - https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
 # - https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
@@ -356,7 +359,7 @@ elif args.command == 'info':
 #source = r'/home/scratch/Downloads/sources'
 #destination = r'/home/scratch/Downloads/destination/output.pdf'
 
-#displayBanner()
+
 #mergerTool(source,destination)
 #checkPDF(file)
 
