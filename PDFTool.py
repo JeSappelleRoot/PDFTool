@@ -295,7 +295,7 @@ def checkOutputFolder(path):
 
 # Initialization of the arguments parser
 parser = argparse.ArgumentParser(
-usage=argparse.SUPPRESS,
+#usage=argparse.SUPPRESS,
 formatter_class=argparse.RawDescriptionHelpFormatter,
 description="""PDFTool is a simple tool to manage PDF files.\n
 - PDFTool.py merge --help display help about merging
