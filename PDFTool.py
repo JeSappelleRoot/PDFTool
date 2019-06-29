@@ -2,6 +2,7 @@
 import os
 import re
 import glob
+import fitz
 import argparse
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 
@@ -214,12 +215,21 @@ def checkOutputFolder(path):
     elif os.path.isdir(path):
         return True
 
-# -------------------------------------------------> extractText
-def extractText(file,output):
+# -------------------------------------------------> extractImg
+def extractImg(file,output):
 
-
-
-
+    pdf = fitz.open(filePDF)
+    for i in range(len(pdf)):
+        for img in pdf.getPageImageList(i):
+            xref = img[0]
+            pix = fitz.Pixmap(pdf, xref)
+            if pix.n < 5:       # this is GRAY or RGB
+                pix.writePNG(f"{outputDir}/Image{i}.png") #% (i, xref))
+            else:               # CMYK: convert to RGB first
+                pix1 = fitz.Pixmap(fitz.csRGB, pix)
+                pix1.writePNG(f"{outputDir}/Image{i}.png") #% (i, xref))
+                pix1 = None
+            pix = None
 
     return
 
@@ -272,3 +282,9 @@ def extractText(file,output):
 #        splitFile(inputFile, outputFolder, page)
 #else:
 #    splitFile(inputFile,outputFolder,page)
+
+
+# ================ Test extractImg function ================
+#filePDF = r'/home/scratch/Downloads/sources/file.pdf'
+#outputDir = r'/home/scratch/Downloads/destination'
+#extractImg(filePDF,outputDir)
