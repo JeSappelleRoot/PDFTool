@@ -283,9 +283,6 @@ def checkOutputFolder(path):
 # ======================== Main section ========================
 # ==============================================================
 
-# With a banner, it's a better ! ><))))°>
-displayBanner()
-
 # Ideas from :
 # - https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
 # - https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
@@ -337,6 +334,10 @@ infoParser.add_argument('--infoOut',help='Destination dump file (display in cons
 
 # Finally parse arguments
 args = parser.parse_args()
+
+
+# With a banner, it's a better ! ><))))°>
+displayBanner()
 
 ## Define action with command detected
 
