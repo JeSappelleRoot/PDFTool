@@ -293,6 +293,63 @@ def checkOutputFolder(path):
 
 # ================= Arg Parse section =================
 
+# Initialization of the arguments parser
+parser = argparse.ArgumentParser(
+usage=argparse.SUPPRESS,
+formatter_class=argparse.RawDescriptionHelpFormatter,
+description="""PDFTool is a simple tool to manage PDF files.\n
+- PDFTool.py merge --help display help about merging
+- PDFTool.py split --help display help about splitting
+- PDFTool.py extract --help display help about extraction (text or images)
+- PDFTool.py info --help display help about how to get info about a PDF
+
+------------------------------------------------------------------------------
+"""
+)
+
+# Initialize a subparser, with command destination
+subParser = parser.add_subparsers(title="command",dest="command")
+
+# Merge subparser
+mergeParser = subParser.add_parser('merge',help='Merge PDF files together')
+mergeParser.add_argument('--mergeIn',help='Source must be a folder',required=True)
+mergeParser.add_argument('--mergeOut',help='Destination must be a file (PDF)',required=True)
+
+# Split subparser
+splitParser = subParser.add_parser('split',help='Split specific page of PDF file, or all')
+splitParser.add_argument('--splitIn',help='Source file to split',required=True)
+splitParser.add_argument('--splitOut', help='Destination folder',required=True)
+splitParser.add_argument('--num',help='The number of page or "all"',required=True)
+
+# Extraction subparser
+extractParser = subParser.add_parser('extract',help='Extract text or images from a PDF file')
+extractParser.add_argument('--extIn', help='Source file or folder for extraction',required=True)
+extractParser.add_argument('--extType', help='Type of the extract',choices=['img','text'],required=True)
+extractParser.add_argument('--extOut',help='Destination file or folder for extraction',required=True)
+
+# Getting info subparser
+infoParser = subParser.add_parser('info',help='Get info about a PDF document')
+infoParser.add_argument('--infoIn',help='Source file or folder to get info',required=True)
+infoParser.add_argument('--infoOut',help='Destination dump file (display in console by default)',default='console',required=True)
+
+# Finally parse arguments
+args = parser.parse_args()
+
+## Define action with command detected
+
+# Merge action
+if args.command == 'merge':
+    print('Merge !')
+# Split action
+elif args.command == 'split':
+    print('Split !')
+# Extract action
+elif args.command == 'extract':
+    print('Extract !')
+# Info action
+elif args.command == 'info':
+    print('Info !')
+
 
 
 # Define somes variables
