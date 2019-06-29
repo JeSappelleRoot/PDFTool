@@ -1,6 +1,7 @@
 # =========================== Import Section ===========================
 import os
 import re
+import sys
 import glob
 import fitz
 import argparse
@@ -338,7 +339,8 @@ args = parser.parse_args()
 
 # With a banner, it's a better ! ><))))°>
 displayBanner()
-
+if len(sys.argv)==1:
+    parser.print_help(sys.stderr)
 ## Define action with command detected
 
 # Merge action
