@@ -217,18 +217,31 @@ def checkOutputFolder(path):
 
 # -------------------------------------------------> extractImg
 def extractImg(file,output):
+# Function to extract images from a PDF file
+# All images from PDF will be extracted
 
+    # Open pdf file with fitz module
     pdf = fitz.open(filePDF)
+    # Loop with the max number of page
     for i in range(len(pdf)):
+        # Get image in the page
         for img in pdf.getPageImageList(i):
             xref = img[0]
             pix = fitz.Pixmap(pdf, xref)
             if pix.n < 5:       # this is GRAY or RGB
-                pix.writePNG(f"{outputDir}/Image{i}.png") #% (i, xref))
+                if os.path.isfile(f"{outputDir}/Image{i}.png"):
+                    print(f"[!] The file Image{i}.png yet exist in {outputDir}")
+                else:
+                    pix.writePNG(f"{outputDir}/Image{i}.png")
+                    print(f"[+] Write Image{i}.png")
             else:               # CMYK: convert to RGB first
-                pix1 = fitz.Pixmap(fitz.csRGB, pix)
-                pix1.writePNG(f"{outputDir}/Image{i}.png") #% (i, xref))
-                pix1 = None
+                if os.path.isfile(f"{outputDir}/Image{i}.png"):
+                    print(f"[!] The file Image{i}.png yet exist in {outputDir}")
+                else:
+                    pix1 = fitz.Pixmap(fitz.csRGB, pix)
+                    pix1.writePNG(f"{outputDir}/Image{i}.png")
+                    print(f"[+] Write Image{i}.png")
+                    pix1 = None
             pix = None
 
     return
@@ -242,6 +255,7 @@ def extractImg(file,output):
 # - https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
 # - https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
 # - http://www.blog.pythonlibrary.org/2018/04/10/extracting-pdf-metadata-and-text-with-python/
+# - https://stackoverflow.com/questions/2693820/extract-images-from-pdf-without-resampling-in-python (post 15)
 
 
 # ================= Arg Parse section =================
