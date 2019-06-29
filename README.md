@@ -40,6 +40,7 @@ PDFTool use the following python modules :
 ### Requirements file
 ```
 PyPDF2==1.26.0
+PyMuPDF==1.14.16
 ```
 Just run `pip3 install -r requirements.txt` to get all modules needed by PDFTool
 
