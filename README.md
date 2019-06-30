@@ -1,18 +1,16 @@
 Table of Contents
 =================
 
-   * [Table of content](#table-of-content)
-   * [PDFTool](#pdftool)
-      * [Requirements](#requirements)
-         * [Requirements file](#requirements-file)
-   * [About functionalities of PDFTool](#about-functionalities-of-pdftool)
-      * [About merging](#about-merging)
-      * [About splitting](#about-splitting)
-      * [About extraction](#about-extraction)
-      * [About getting info](#about-getting-info)
 
-> Table of contents created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
-
+- [ PDFTool](#pdftool)
+  - [ Requirements](#requirements)
+    - [ Requirements file](#requirements-file)
+    - [ Sources, ideas from...](#sources-ideas-from)
+- [ About functionalities of PDFTool](#about-functionalities-of-pdftool)
+  - [ About merging](#about-merging)
+  - [ About splitting](#about-splitting)
+  - [ About extraction](#about-extraction)
+  - [ About getting info](#about-getting-info)
 
 
 
@@ -42,6 +40,16 @@ PyPDF2==1.26.0
 PyMuPDF==1.14.16
 ```
 Just run `pip3 install -r requirements.txt` to install all modules needed by PDFTool
+
+### Sources, ideas from...
+
+- https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
+ - https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
+ - http://www.blog.pythonlibrary.org/2018/04/10/extracting-pdf-metadata-and-text-with-python/
+ - https://stackoverflow.com/questions/2693820/extract-images-from-pdf-without-resampling-in-python (post 15)
+ - https://pymupdf.readthedocs.io/en/latest/tutorial/
+
+
 
 # About functionalities of PDFTool
 
