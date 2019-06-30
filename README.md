@@ -89,7 +89,7 @@ Usage examples :
 PDFTool will automaticly named the extract page by number of the needed page :   
 -Page_2.pdf for the 2nd page  
 -Page_5.pdf for the 5th page  
-**Easy Peasy !**
+
 
 **The `--splitOut` argument must be a destination folder**
 **The split function can't work with entire folder, which contains multiple PDF files**
@@ -119,7 +119,40 @@ PDFTool will automaticly named the extract page by number of the needed page :
 
 PDFTool can extract text or images from a PDF file.  
 The extraction of text does not work with all PDF, depend of the construction of the file. The layout may not be respected when extract text.   
-The image extraction use the page number and the image number (in the targeted page) to get the output name file. 
+The image extraction use the page number and the image number (in the targeted page) to get the output name file.  
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [ PDFTool](#pdftool)
+  - [ Requirements](#requirements)
+    - [ Requirements file](#requirements-file)
+- [ About functionalities of PDFTool](#about-functionalities-of-pdftool)
+  - [ About merging](#about-merging)
+  - [ About splitting](#about-splitting)
+  - [ About extraction](#about-extraction)
+  - [ About getting info](#about-getting-info)
+
+<!-- /code_chunk_output -->
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [ PDFTool](#pdftool)
+  - [ Requirements](#requirements)
+    - [ Requirements file](#requirements-file)
+- [ About functionalities of PDFTool](#about-functionalities-of-pdftool)
+  - [ About merging](#about-merging)
+  - [ About splitting](#about-splitting)
+  - [ About extraction](#about-extraction)
+  - [ About getting info](#about-getting-info)
+
+<!-- /code_chunk_output -->
+
+When you want extract image, **you must specify a destionation folder**
+When you want extract text to a custom file (TXT in example), **you must specify a destination file, not a folder**
 
 Usage examples :  
 * extract text from a PDF file 
@@ -195,10 +228,10 @@ Usage examples :
 - Get info about multiple files in a directory and display it in the console  
 `PDFTool.py info --infoIn /home/Doe/files/`
 
-**By default, the `-info` functionality make the output directly in the console**
+**By default, the `info` functionality make the output directly in the console**
 
 
-Example of console output for a single file :
+**Console output (default behaviour)**
 ```
   _____  _____  ______ _______          _
  |  __ \|  __ \|  ____|__   __|        | |
@@ -223,4 +256,20 @@ PTEX : 'This is pdfTeX
 Version ?
 Total number of pages in document : 12
 --------------------------------------
+```
+
+
+**Dump information to file**
+
+```
+  _____  _____  ______ _______          _
+ |  __ \|  __ \|  ____|__   __|        | |
+ | |__) | |  | | |__     | | ___   ___ | |
+ |  ___/| |  | |  __|    | |/ _ \ / _ \| |
+ | |    | |__| | |       | | (_) | (_) | |
+ |_|    |_____/|_|       |_|\___/ \___/|_|
+
+
+    
+[+] Info successfully dumped to /home/scratch/destination/file.txt
 ```
