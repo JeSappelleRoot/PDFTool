@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # =========================== Import Section ===========================
 import os
 import re
