@@ -430,6 +430,8 @@ args = parser.parse_args()
 
 # With a banner, it's a better ! ><))))°>
 displayBanner()
+
+# If no arguments in command line, display help message
 if len(sys.argv)==1:
     parser.print_help(sys.stderr)
 ## Define action with command detected
