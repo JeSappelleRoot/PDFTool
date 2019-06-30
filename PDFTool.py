@@ -63,8 +63,8 @@ def mergerTool(src, dst):
             return
         # Else if pdfFiles array got only one element (one PDF find)
         elif len(allPDF) == 1:
+            print("[!] Only one PDF file detected in source directory")
             print("[!] Cannot merge one PDF file to one PDF...")
-            print("[!] Use your mind and add more PDF files")
             return
 
         # Initialize the merger
@@ -74,12 +74,15 @@ def mergerTool(src, dst):
             # Get PDF basename (because fullname in each loop can be too much)
             pdfBaseName = os.path.basename(pdf)
             if checkPDF(pdf) == 'pdfOK':
-                print(f"[+] Adding [{pdfBaseName}] for merging")
+                print(f"[+] Adding {pdfBaseName} for merging")
                 pdfMerger.append(pdf)
+            elif checkPDF(pdf) != 'pdfOK':
+                print(f"[!] Cannot add {pdfBaseName}, the file can't be read")
 
         # Finally write the final PDF to output.pdf file in destination folder
         with open(f"{dst}",'wb') as finalPDF:
             pdfMerger.write(finalPDF)
+            print(f"\n[+] Successfully writed {dst}")
 
     # Get exception
     except Exception as error:
@@ -227,31 +230,31 @@ def extractImg(file,output):
 
 
 # -------------------------------------------------> extractText
-def extractText(file,out):
+def extractText(file,outFile):
 # Function to extract all text from a PDF file
 # The result can't work very well
 # Depend of the PDF construction
 
-    # Get the baseName (without the extension)
-    baseName = (os.path.basename(file)).split('.')[0]
-
     # Open the PDF file with fitz
     pdf = fitz.open(file)
+        
     # Loop in all page with a range
     for num in range(len(pdf)):
         # Load the page n° num
         page = pdf.loadPage(num)
         # Get text of this page
         text = page.getText()
+
         # Open the output file, in append mode
-        with open(f"{out}/{baseName}.txt", 'a') as output:
+        with open(outFile, 'a') as output:
             # Define a header to know from where the text is extract
             header = f"========================================== From page {num + 1} ==========================================\n"
             # Write header first
             output.write(header)
             # Finally write the text of the page in the ouput file
             output.write(text)
-            print(f"[+] Text from page {num + 1} writted to {out}/{baseName}.txt")
+            print(f"[+] Text from page {num + 1} writted to {outFile}")
+
     return
 
 
@@ -341,13 +344,28 @@ def outputIsValid(path,typeOut):
             print("[!] The parent folder of output file does not exist :")
             print(path)
             exit()
+        elif os.path.isfile(path):
+            print(f"[!] The file {path} already exist !")
+            exit()
+        elif os.path.isdir(path):
+            print("[!] Please, specify an output file instead a folder :")
+            print(path)
+            exit()
     # If need to check an ouput PDF file
     elif typeOut == 'pdf':
         # Get file extension
         fileExtension = os.path.splitext(path)[1]
         # If output pdf file haven't got a pdf extension
-        if fileExtension != '.pdf':
+        if os.path.isdir(path):
+            print("[!] Please, specify an output file instead a folder :")
+            print(path)
+            exit()
+        elif fileExtension != '.pdf':
             print("The extension of destination file does not match with PDF file :")
+            print(path)
+            exit()
+        elif os.path.isfile(path):
+            print("[!] The output PDF file already exist !")
             print(path)
             exit()
         
@@ -416,9 +434,17 @@ if len(sys.argv)==1:
     parser.print_help(sys.stderr)
 ## Define action with command detected
 
-# Merge action
+# ====================================== Merge action
 if args.command == 'merge':
-    print('Merge !')
+    source = args.mergeIn
+    dest = args.mergeOut
+
+    inputIsValid(source,'folder')
+    outputIsValid(dest,'pdf')
+    mergerTool(source,dest)
+
+
+
 # Split action
 elif args.command == 'split':
     print('Split !')
@@ -431,60 +457,21 @@ elif args.command == 'extract':
 
     # If extract image from PDF file
     if extractType == 'img':
-
-        # If the source file does not exist
-        if not checkInputFile(source):
-            exit()
-        # If the output folder does not exist
-        elif not checkOutputFolder(dest):
-            exit()
-        # If the source file does not have a PDF extension
-        elif checkPDF(source) == 'extensionNONOK':
-            print("[!] Check source file, not a PDF extension :")
-            print(f"{source}")
-            exit()
-        # If the source file cannot be read
-        elif checkPDF(source) == False:
-            print("[!] The source file seems to not be a readable PDF :")
-            print(f"{source}")
-            exit()
-        # Finally, extract image from source to the output dir
-        else:
-            extractImg(source,dest)
-
+        # Check the input file
+        inputIsValid(source,'pdf')
+        # Check the output folder
+        outputIsValid(dest,'folder')
+        # Finally launch the extraction
+        extractImg(source,dest)
 
     # If extract text from PDF file
     elif extractType == 'text':
-
-        # If the source file does not exist
-        if not checkInputFile(source):
-            exit()
-        # If the parent folder of the output file does not exist
-        elif not os.path.isdir(Path(dest).parent):
-            print("[!] The parent folder of output file does not exist :")
-            print(dest)
-            exit()
-        # If the source file does not have a PDF extension
-        elif checkPDF(source) == 'extensionNONOK':
-            print("[!] Check source file, not a PDF extension :")
-            print(f"{source}")
-            exit()
-        elif os.path.isfile(dest):
-            print("[!] Output file already exist :")
-            print(dest)
-            print("Choose another name")
-            exit()
-        else:
-            extractText(source,dest)
-
-
-
-
-
-
-
-
-
+        # Check the input file
+        inputIsValid(source,'pdf')
+        # Check the output file
+        outputIsValid(dest,'file')
+        # Finally launch the extraction
+        extractText(source,dest)
 
 # ====================================== Info action
 elif args.command == 'info':
@@ -492,32 +479,19 @@ elif args.command == 'info':
     source = args.infoIn
     dest = args.infoOut
 
-# --------------------------------------------------------- Error check
-    # If the source file does not exist
-    if not checkInputFile(source):
-        exit()
-    # If the source haven't got a PDF extension
-    if checkPDF(source) == 'extensionNONOK':
-        print("[!] Check source file, not a PDF extension :")
-        print(f"{source}")
-        exit()
-    # If the source is not a true PDF file
-    elif checkPDF(source) == False:
-        print("[!] The source file seems to not be a readable PDF :")
-        print(f"{source}")
-        exit()
-    # If the parent folder of the output file does not exist, display the result in console
-    elif not os.path.isdir(Path(dest).parent):
-        print("[!] The parent folder of output file does not exist :")
-        print(dest)
-        print("[+] Display output in the console\n")
-        dest = 'console'
-# --------------------------------------------------------- Launch the function with args
+    # Check the source file
+    inputIsValid(source,'pdf')
+    
+    # If output is in file, check the ouput file
+    if dest != 'console':
+        outputIsValid(dest,'file')
+
     if os.path.isfile(source):
         if checkPDF(source) == 'pdfOK' and dest == 'console':
             getInfo(source,dest)
         elif checkPDF(source) == 'pdfOK' and dest != 'console':
             getInfo(source,dest)
+
 
 
 
