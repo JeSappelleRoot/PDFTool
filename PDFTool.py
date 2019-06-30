@@ -230,25 +230,28 @@ def extractImg(file,output):
     pdf = fitz.open(file)
     # Loop with the max number of page
     for i in range(len(pdf)):
+        # Add image counter
+        imageCounter = 0
         # Get image in the page
         for img in pdf.getPageImageList(i):
             xref = img[0]
             pix = fitz.Pixmap(pdf, xref)
             if pix.n < 5:       # this is GRAY or RGB
-                if os.path.isfile(f"{output}/Image{i}.png"):
-                    print(f"[!] The file Image{i}.png yet exist in {output}")
+                if os.path.isfile(f"{output}/Page{i}_Image{imageCounter}.png"):
+                    print(f"[!] The file Page{i}_Image{imageCounter}.png yet exist in {output}")
                 else:
-                    pix.writePNG(f"{output}/Image{i}.png")
-                    print(f"[+] Write Image{i}.png")
+                    pix.writePNG(f"{output}/Page{i}_Image{imageCounter}.png")
+                    print(f"[+] Write Page{i}_Image{imageCounter}.png")
             else:               # CMYK: convert to RGB first
-                if os.path.isfile(f"{output}/Image{i}.png"):
-                    print(f"[!] The file Image{i}.png yet exist in {output}")
+                if os.path.isfile(f"{output}/Page{i}_Image{imageCounter}.png"):
+                    print(f"[!] The file Page{i}_Image{imageCounter}.png yet exist in {output}")
                 else:
                     pix1 = fitz.Pixmap(fitz.csRGB, pix)
-                    pix1.writePNG(f"{output}/Image{i}.png")
-                    print(f"[+] Write Image{i}.png")
+                    pix1.writePNG(f"{output}/Page{i}_Image{imageCounter}.png")
+                    print(f"[+] Write Page{i}_Image{imageCounter}.png")
                     pix1 = None
             pix = None
+            imageCounter = imageCounter + 1 
 
     return
 
