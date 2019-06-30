@@ -49,6 +49,7 @@ Just run `pip3 install -r requirements.txt` to install all modules needed by PDF
  - https://stackoverflow.com/questions/2693820/extract-images-from-pdf-without-resampling-in-python (post 15)
  - https://pymupdf.readthedocs.io/en/latest/tutorial/
 
+*Thanks to all people, from JeSappelleRoot*
 
 
 # About functionalities of PDFTool
