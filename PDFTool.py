@@ -159,6 +159,7 @@ def getInfo(file,output):
                 # Finally write the footer and the bottom separator
                 stream.write(f"{footer}\n")
                 stream.write(f"{bottomSeparator}\n\n")
+                print(f"[+] Info successfully dumped to {output}")
 
     # Catch a possible error...
     except Exception as error:
@@ -182,6 +183,14 @@ def splitFile(file,outSplit,page):
             pdfWriter = PdfFileWriter()
 
             if page != 'all':
+                if int(page) > nbPage:
+                    print(f"[!] The maximum page number allowed for {file} is {nbPage}")
+                    print("[!] Please, specify a lower page number")
+                    exit()
+                elif int(page) < 0:
+                    print(f"[!] The minimum page number allowed is 0")
+                    print(f"[!] Please specify a greater page number")
+                    exit()
                 # Read needed page (-1 because number begin at 0...like an index...)
                 pdfWriter.addPage(pdfReader.getPage(int(page) - 1))
                 # Define a name for outfile, based of the page number
@@ -453,23 +462,31 @@ if len(sys.argv)==1:
 
 # ====================================== Merge action
 if args.command == 'merge':
+    # Assign args to variables
     source = args.mergeIn
     dest = args.mergeOut
 
+    # Check the source folder
     inputIsValid(source,'folder')
+    # Check the destination file
     outputIsValid(dest,'pdf')
+    # Finally launch the merge
     mergerTool(source,dest)
 
 
 
 # ====================================== Split action
 elif args.command == 'split':
+    # Assign args to variables
     source = args.splitIn
     dest = args.splitOut
     page = args.num
 
+    # Check the input PDF file
     inputIsValid(source,'pdf')
+    # Check the output folder
     outputIsValid(dest,'folder')
+    # Finally launch the split
     splitFile(source, dest, page)
 
 
@@ -511,10 +528,7 @@ elif args.command == 'info':
     # If output is in file, check the ouput file
     if dest != 'console':
         outputIsValid(dest,'file')
-
-    if os.path.isfile(source):
-        if checkPDF(source) == 'pdfOK' and dest == 'console':
-            getInfo(source,dest)
-        elif checkPDF(source) == 'pdfOK' and dest != 'console':
-            getInfo(source,dest)
+    
+    # Finally get info about a PDF file
+    getInfo(source,dest)
 
