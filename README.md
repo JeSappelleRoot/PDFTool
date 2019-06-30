@@ -127,8 +127,32 @@ Usage examples :
 * extract images from a PDF file  
 `PDFTool.py extract --extType img --extIn /home/Doe/source/file.pdf --extOut /home/Doe/destination/`
 
+**Text extraction**
+
+```
+
+  _____  _____  ______ _______          _
+ |  __ \|  __ \|  ____|__   __|        | |
+ | |__) | |  | | |__     | | ___   ___ | |
+ |  ___/| |  | |  __|    | |/ _ \ / _ \| |
+ | |    | |__| | |       | | (_) | (_) | |
+ |_|    |_____/|_|       |_|\___/ \___/|_|
 
 
+    
+[+] Text from page 1 writted to /home/Doe/destination/output.txt
+[+] Text from page 2 writted to /home/Doe/destination/output.txt
+[+] Text from page 3 writted to /home/Doe/destination/output.txt
+[+] Text from page 4 writted to /home/Doe/destination/output.txt
+[+] Text from page 5 writted to /home/Doe/destination/output.txt
+[+] Text from page 6 writted to /home/Doe/destination/output.txt
+
+[...]
+```
+
+
+
+**Image extraction**
 ```
   _____  _____  ______ _______          _
  |  __ \|  __ \|  ____|__   __|        | |
@@ -149,6 +173,8 @@ Usage examples :
 
 [...]
 ```
+
+
 
 
 
