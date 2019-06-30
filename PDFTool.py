@@ -35,7 +35,6 @@ def checkPDF(file):
     try:
         # Get extension and basename of given file in argument
         fileExtension = os.path.splitext(file)[1]
-        baseName = os.path.basename(file)
         # Simple extension check
         if fileExtension != '.pdf':
             return 'extensionNONOK'
@@ -475,8 +474,6 @@ elif args.command == 'split':
 
 
 
-
-
 # ====================================== Extract action
 elif args.command == 'extract':
     # Assign args to variables
@@ -521,47 +518,3 @@ elif args.command == 'info':
         elif checkPDF(source) == 'pdfOK' and dest != 'console':
             getInfo(source,dest)
 
-
-
-
-
-# Define somes variables
-#source = r'/home/scratch/Downloads/sources'
-#destination = r'/home/scratch/Downloads/destination/output.pdf'
-
-
-#mergerTool(source,destination)
-#checkPDF(file)
-
-
-# ================ Test getInfo function ================
-#getInfoSRCFOLDER = r'/home/scratch/Downloads/sources/'
-#getInfoSINGLEFILE = r'/home/scratch/Downloads/sources/file.pdf'
-#getInfoFILEOUTPUT = r'/home/scratch/Downloads/destination/output.txt'
-#getInfoCONSOLEOUTPUT = 'console'
-
-#if os.path.isdir(folder):
-#    for file in glob.glob(f"{folder}/*.pdf"):
-#        print(file)
-#        getInfo(file, output)
-#else:
-#    getinfo(file,output)
-
-# ================ Test splitFile function ================
-#inputFile = r'/home/scratch/Downloads/sources/file.pdf'
-#outputFolder = r'/home/scratch/Downloads/destination'
-#page = 'all'
-#page = 2
-
-#if page == 'all':
-#    readPdf = PdfFileReader(inputFile)
-#    for page in range(1,readPdf.getNumPages() + 1):
-#        splitFile(inputFile, outputFolder, page)
-#else:
-#    splitFile(inputFile,outputFolder,page)
-
-
-# ================ Test extractImg function ================
-#filePDF = r'/home/scratch/Downloads/sources/file.pdf'
-#outputDir = r'/home/scratch/Downloads/destination'
-#extractImg(filePDF,outputDir)
