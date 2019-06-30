@@ -121,35 +121,6 @@ PDFTool can extract text or images from a PDF file.
 The extraction of text does not work with all PDF, depend of the construction of the file. The layout may not be respected when extract text.   
 The image extraction use the page number and the image number (in the targeted page) to get the output name file.  
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
-- [ PDFTool](#pdftool)
-  - [ Requirements](#requirements)
-    - [ Requirements file](#requirements-file)
-- [ About functionalities of PDFTool](#about-functionalities-of-pdftool)
-  - [ About merging](#about-merging)
-  - [ About splitting](#about-splitting)
-  - [ About extraction](#about-extraction)
-  - [ About getting info](#about-getting-info)
-
-<!-- /code_chunk_output -->
-
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
-- [ PDFTool](#pdftool)
-  - [ Requirements](#requirements)
-    - [ Requirements file](#requirements-file)
-- [ About functionalities of PDFTool](#about-functionalities-of-pdftool)
-  - [ About merging](#about-merging)
-  - [ About splitting](#about-splitting)
-  - [ About extraction](#about-extraction)
-  - [ About getting info](#about-getting-info)
-
-<!-- /code_chunk_output -->
 
 When you want extract image, **you must specify a destionation folder**
 When you want extract text to a custom file (TXT in example), **you must specify a destination file, not a folder**
@@ -206,10 +177,6 @@ Usage examples :
 
 [...]
 ```
-
-
-
-
 
 ## About getting info
 
