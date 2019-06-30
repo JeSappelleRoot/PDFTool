@@ -251,7 +251,7 @@ def extractText(file,out):
             output.write(header)
             # Finally write the text of the page in the ouput file
             output.write(text)
-
+            print(f"[+] Text from page {num + 1} writted to {out}/{baseName}.txt")
     return
 
 
@@ -280,7 +280,78 @@ def checkOutputFolder(path):
     elif os.path.isdir(path):
         return True
 
+# -------------------------------------------------> inputIsValid
+def inputIsValid(path,typeIn):
+# Function to check the input arg 
+# Can check source folder or source file (valid PDF)
 
+    # If need to check an input folder
+    if typeIn == 'folder':
+        # If the folder does not exist
+        if not os.path.isdir(path):
+            print(f"[!] The source folder does not exist")
+            print(path)
+            exit()
+
+    # If need to check an input pdf
+    elif typeIn == 'pdf':
+        # Get extension and basename of given file in argument
+        fileExtension = os.path.splitext(path)[1]
+        # Check if source file exist
+        if not os.path.isfile(path):
+            print(f"[!] The source file does not exist :")
+            print(path)
+            exit()
+        # Simple extension check
+        elif fileExtension != '.pdf':
+            print("The extension of source file does not match with PDF file :")
+            print(path)
+            exit()
+        # Else, try to read the file to detect if it's a real PDF file
+        else:
+            try:
+                # Open pdf for testing correct reading
+                with open(path,'rb') as stream:
+                    # Test the reading capacity
+                    PdfFileReader(stream)
+            except Exception:
+                print("[!] The source file can't be read, may be a wrong PDF file :")
+                print(path)
+                exit()
+
+    return
+
+# -------------------------------------------------> ouputIsValid
+def outputIsValid(path,typeOut):
+# Function to check the output (file or folder)
+
+    # If need to check an output folder
+    if typeOut == 'folder':
+        # If folder does not exist
+        if not os.path.isdir(path):
+            print("[!] The output folder does not exist :")
+            print(path)
+            exit()
+    #If need to check an output file
+    elif typeOut == 'file':
+        # Get parent folder of output file
+        parentFolder = Path(path).parent
+        # If the parent folder does not exist
+        if not os.path.isdir(parentFolder):
+            print("[!] The parent folder of output file does not exist :")
+            print(path)
+            exit()
+    # If need to check an ouput PDF file
+    elif typeOut == 'pdf':
+        # Get file extension
+        fileExtension = os.path.splitext(path)[1]
+        # If output pdf file haven't got a pdf extension
+        if fileExtension != '.pdf':
+            print("The extension of destination file does not match with PDF file :")
+            print(path)
+            exit()
+        
+    return
 
 # ==============================================================
 # ======================== Main section ========================
@@ -328,7 +399,7 @@ splitParser.add_argument('--num',help='The number of page or "all"',required=Tru
 extractParser = subParser.add_parser('extract',help='Extract text or images from a PDF file',description=displayBanner())
 extractParser.add_argument('--extIn', help='Source file or folder for extraction',required=True)
 extractParser.add_argument('--extType', help='Type of the extract',choices=['img','text'],required=True)
-extractParser.add_argument('--extOut',help='Destination file or folder for extraction',required=True)
+extractParser.add_argument('--extOut',help='Destination file (for text) or folder (for img) for extraction',required=True)
 
 # Getting info subparser
 infoParser = subParser.add_parser('info',help='Get info about a PDF document',description=displayBanner())
@@ -351,11 +422,71 @@ if args.command == 'merge':
 # Split action
 elif args.command == 'split':
     print('Split !')
-# Extract action
+# ====================================== Extract action
 elif args.command == 'extract':
-    print('Extract !')
+    # Assign args to variables
+    extractType = args.extType
+    source = args.extIn
+    dest = args.extOut
 
-# Info action
+    # If extract image from PDF file
+    if extractType == 'img':
+
+        # If the source file does not exist
+        if not checkInputFile(source):
+            exit()
+        # If the output folder does not exist
+        elif not checkOutputFolder(dest):
+            exit()
+        # If the source file does not have a PDF extension
+        elif checkPDF(source) == 'extensionNONOK':
+            print("[!] Check source file, not a PDF extension :")
+            print(f"{source}")
+            exit()
+        # If the source file cannot be read
+        elif checkPDF(source) == False:
+            print("[!] The source file seems to not be a readable PDF :")
+            print(f"{source}")
+            exit()
+        # Finally, extract image from source to the output dir
+        else:
+            extractImg(source,dest)
+
+
+    # If extract text from PDF file
+    elif extractType == 'text':
+
+        # If the source file does not exist
+        if not checkInputFile(source):
+            exit()
+        # If the parent folder of the output file does not exist
+        elif not os.path.isdir(Path(dest).parent):
+            print("[!] The parent folder of output file does not exist :")
+            print(dest)
+            exit()
+        # If the source file does not have a PDF extension
+        elif checkPDF(source) == 'extensionNONOK':
+            print("[!] Check source file, not a PDF extension :")
+            print(f"{source}")
+            exit()
+        elif os.path.isfile(dest):
+            print("[!] Output file already exist :")
+            print(dest)
+            print("Choose another name")
+            exit()
+        else:
+            extractText(source,dest)
+
+
+
+
+
+
+
+
+
+
+# ====================================== Info action
 elif args.command == 'info':
     # Assign args to variables
     source = args.infoIn
@@ -363,11 +494,8 @@ elif args.command == 'info':
 
 # --------------------------------------------------------- Error check
     # If the source file does not exist
-    if not os.path.isfile(source):
-        print("[!] The source file does not exist :")
-        print(source)
+    if not checkInputFile(source):
         exit()
-
     # If the source haven't got a PDF extension
     if checkPDF(source) == 'extensionNONOK':
         print("[!] Check source file, not a PDF extension :")
@@ -384,7 +512,7 @@ elif args.command == 'info':
         print(dest)
         print("[+] Display output in the console\n")
         dest = 'console'
-# ----------------------------------------------------------- Launch the function
+# --------------------------------------------------------- Launch the function with args
     if os.path.isfile(source):
         if checkPDF(source) == 'pdfOK' and dest == 'console':
             getInfo(source,dest)
