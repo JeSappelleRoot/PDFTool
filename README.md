@@ -34,14 +34,14 @@ PDFTool use the following python modules :
 - `PyPDF2` to have fun with PDF files
 - `fitz` to extract pictures and text from PDF
 - `Path` from `pathlib` to get parent folder of a file
-### Requirements file
+### Requirements file  
 ```
 PyPDF2==1.26.0
 PyMuPDF==1.14.16
 ```
 Just run `pip3 install -r requirements.txt` to install all modules needed by PDFTool
 
-### Sources, ideas from...
+### Sources, ideas from...  
 
 - https://indianpythonista.wordpress.com/2017/01/10/working-with-pdf-files-in-python/
  - https://www.geeksforgeeks.org/working-with-pdf-files-in-python/
