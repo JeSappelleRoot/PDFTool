@@ -4,16 +4,18 @@ import re
 import sys
 import glob
 import fitz
+from pathlib import Path
 import argparse
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 
 # -------------------------------------------------> displayBanner
 def displayBanner():
+    
 # Simple function to display a displayBanner
 # Can be disabled if you prefer boring console !
 
     os.system('clear')
-    print("""
+    print(r"""
   _____  _____  ______ _______          _
  |  __ \|  __ \|  ____|__   __|        | |
  | |__) | |  | | |__     | | ___   ___ | |
@@ -41,10 +43,10 @@ def checkPDF(file):
             # Open pdf for testing correct reading
             with open(file,'rb') as stream:
                 # Test the reading capacity
-                openPdf = PdfFileReader(stream)
+                PdfFileReader(stream)
                 return 'pdfOK'
     # Except reading error
-    except Exception as error:
+    except Exception:
         return False
 
 # -------------------------------------------------> PDF merger function
@@ -76,7 +78,7 @@ def mergerTool(src, dst):
                 pdfMerger.append(pdf)
 
         # Finally write the final PDF to output.pdf file in destination folder
-        with open(f"{destination}",'wb') as finalPDF:
+        with open(f"{dst}",'wb') as finalPDF:
             pdfMerger.write(finalPDF)
 
     # Get exception
@@ -187,7 +189,7 @@ def splitFile(file,outSplit,page):
     # Except a possible error...
     except Exception as error:
         print(f"An error occured when splitting {os.path.basename(file)} :")
-        print("{error}")
+        print(f"{error}")
 
     return
 
@@ -198,7 +200,7 @@ def extractImg(file,output):
 # All images from PDF will be extracted
 
     # Open pdf file with fitz module
-    pdf = fitz.open(filePDF)
+    pdf = fitz.open(file)
     # Loop with the max number of page
     for i in range(len(pdf)):
         # Get image in the page
@@ -206,17 +208,17 @@ def extractImg(file,output):
             xref = img[0]
             pix = fitz.Pixmap(pdf, xref)
             if pix.n < 5:       # this is GRAY or RGB
-                if os.path.isfile(f"{outputDir}/Image{i}.png"):
-                    print(f"[!] The file Image{i}.png yet exist in {outputDir}")
+                if os.path.isfile(f"{output}/Image{i}.png"):
+                    print(f"[!] The file Image{i}.png yet exist in {output}")
                 else:
-                    pix.writePNG(f"{outputDir}/Image{i}.png")
+                    pix.writePNG(f"{output}/Image{i}.png")
                     print(f"[+] Write Image{i}.png")
             else:               # CMYK: convert to RGB first
-                if os.path.isfile(f"{outputDir}/Image{i}.png"):
-                    print(f"[!] The file Image{i}.png yet exist in {outputDir}")
+                if os.path.isfile(f"{output}/Image{i}.png"):
+                    print(f"[!] The file Image{i}.png yet exist in {output}")
                 else:
                     pix1 = fitz.Pixmap(fitz.csRGB, pix)
-                    pix1.writePNG(f"{outputDir}/Image{i}.png")
+                    pix1.writePNG(f"{output}/Image{i}.png")
                     print(f"[+] Write Image{i}.png")
                     pix1 = None
             pix = None
@@ -312,26 +314,26 @@ description="""PDFTool is a simple tool to manage PDF files.\n
 subParser = parser.add_subparsers(title="command",dest="command")
 
 # Merge subparser
-mergeParser = subParser.add_parser('merge',help='Merge PDF files together')
+mergeParser = subParser.add_parser('merge',help='Merge PDF files together',description=displayBanner())
 mergeParser.add_argument('--mergeIn',help='Source must be a folder',required=True)
 mergeParser.add_argument('--mergeOut',help='Destination must be a file (PDF)',required=True)
 
 # Split subparser
-splitParser = subParser.add_parser('split',help='Split specific page of PDF file, or all')
+splitParser = subParser.add_parser('split',help='Split specific page of PDF file, or all',description=displayBanner())
 splitParser.add_argument('--splitIn',help='Source file to split',required=True)
 splitParser.add_argument('--splitOut', help='Destination folder',required=True)
 splitParser.add_argument('--num',help='The number of page or "all"',required=True)
 
 # Extraction subparser
-extractParser = subParser.add_parser('extract',help='Extract text or images from a PDF file')
+extractParser = subParser.add_parser('extract',help='Extract text or images from a PDF file',description=displayBanner())
 extractParser.add_argument('--extIn', help='Source file or folder for extraction',required=True)
 extractParser.add_argument('--extType', help='Type of the extract',choices=['img','text'],required=True)
 extractParser.add_argument('--extOut',help='Destination file or folder for extraction',required=True)
 
 # Getting info subparser
-infoParser = subParser.add_parser('info',help='Get info about a PDF document')
+infoParser = subParser.add_parser('info',help='Get info about a PDF document',description=displayBanner())
 infoParser.add_argument('--infoIn',help='Source file or folder to get info',required=True)
-infoParser.add_argument('--infoOut',help='Destination dump file (display in console by default)',default='console',required=True)
+infoParser.add_argument('--infoOut',help='Destination dump file (display in console by default)',default='console')
 
 # Finally parse arguments
 args = parser.parse_args()
@@ -352,9 +354,43 @@ elif args.command == 'split':
 # Extract action
 elif args.command == 'extract':
     print('Extract !')
+
 # Info action
 elif args.command == 'info':
-    print('Info !')
+    # Assign args to variables
+    source = args.infoIn
+    dest = args.infoOut
+
+# --------------------------------------------------------- Error check
+    # If the source file does not exist
+    if not os.path.isfile(source):
+        print("[!] The source file does not exist :")
+        print(source)
+        exit()
+
+    # If the source haven't got a PDF extension
+    if checkPDF(source) == 'extensionNONOK':
+        print("[!] Check source file, not a PDF extension :")
+        print(f"{source}")
+        exit()
+    # If the source is not a true PDF file
+    elif checkPDF(source) == False:
+        print("[!] The source file seems to not be a readable PDF :")
+        print(f"{source}")
+        exit()
+    # If the parent folder of the output file does not exist, display the result in console
+    elif not os.path.isdir(Path(dest).parent):
+        print("[!] The parent folder of output file does not exist :")
+        print(dest)
+        print("[+] Display output in the console\n")
+        dest = 'console'
+# ----------------------------------------------------------- Launch the function
+    if os.path.isfile(source):
+        if checkPDF(source) == 'pdfOK' and dest == 'console':
+            getInfo(source,dest)
+        elif checkPDF(source) == 'pdfOK' and dest != 'console':
+            getInfo(source,dest)
+
 
 
 
