@@ -56,8 +56,26 @@ The output file must be a valid PDF file (with the right extension).
 **Be sure your files are sorted and organized. PDFTool will merge files successively, in alphabetical order**
 
 Usage examples :  
-`PDFTool.py -merge --mergeIn /home/Doe/folderContainPDF --mergeOut /home/Doe/result.pdf `  
+`PDFTool.py -merge --mergeIn /home/Doe/source --mergeOut /home/Doe/result.pdf `  
 
+```
+  _____  _____  ______ _______          _
+ |  __ \|  __ \|  ____|__   __|        | |
+ | |__) | |  | | |__     | | ___   ___ | |
+ |  ___/| |  | |  __|    | |/ _ \ / _ \| |
+ | |    | |__| | |       | | (_) | (_) | |
+ |_|    |_____/|_|       |_|\___/ \___/|_|
+
+
+    
+[+] Adding file1.pdf for merging
+[+] Adding file2.pdf for merging
+[+] Adding file3.pdf for merging
+[+] Adding file4.pdf for merging
+[+] Adding file5.pdf for merging
+
+[+] Successfully writed /home/Doe/result.pdf
+```
 
 ## About splitting
 
@@ -77,8 +95,54 @@ PDFTool will automaticly named the extract page by number of the needed page :
 **The `--splitOut` argument must be a destination folder**
 **The split function can't work with entire folder, which contains multiple PDF files**
 
+```
+  _____  _____  ______ _______          _
+ |  __ \|  __ \|  ____|__   __|        | |
+ | |__) | |  | | |__     | | ___   ___ | |
+ |  ___/| |  | |  __|    | |/ _ \ / _ \| |
+ | |    | |__| | |       | | (_) | (_) | |
+ |_|    |_____/|_|       |_|\___/ \___/|_|
+
+
+    
+[+] Successfully write /home/Doe/destination/Page_1.pdf
+[+] Successfully write /home/Doe/destination/Page_2.pdf
+[+] Successfully write /home/Doe/destination/Page_3.pdf
+[+] Successfully write /home/Doe/destination/Page_4.pdf
+[+] Successfully write /home/Doe/destination/Page_5.pdf
+[+] Successfully write /home/Doe/destination/Page_6.pdf
+[+] Successfully write /home/Doe/destination/Page_7.pdf
+[+] Successfully write /home/Doe/destination/Page_8.pdf
+```
+
 
 ## About extraction
+
+
+```
+  _____  _____  ______ _______          _
+ |  __ \|  __ \|  ____|__   __|        | |
+ | |__) | |  | | |__     | | ___   ___ | |
+ |  ___/| |  | |  __|    | |/ _ \ / _ \| |
+ | |    | |__| | |       | | (_) | (_) | |
+ |_|    |_____/|_|       |_|\___/ \___/|_|
+
+
+    
+[+] Write Page2_Image0.png
+[+] Write Page2_Image1.png
+[+] Write Page4_Image0.png
+[+] Write Page4_Image1.png
+[+] Write Page4_Image2.png
+[+] Write Page5_Image0.png
+[+] Write Page5_Image1.png
+[+] Write Page6_Image0.png
+[+] Write Page6_Image1.png
+
+[...]
+```
+
+
 
 ## About getting info
 
@@ -102,6 +166,14 @@ Usage examples :
 
 Example of console output for a single file :
 ```
+  _____  _____  ______ _______          _
+ |  __ \|  __ \|  ____|__   __|        | |
+ | |__) | |  | | |__     | | ___   ___ | |
+ |  ___/| |  | |  __|    | |/ _ \ / _ \| |
+ | |    | |__| | |       | | (_) | (_) | |
+ |_|    |_____/|_|       |_|\___/ \___/|_|
+
+
 Informations about file.pdf
 ==================================
 Author ?
