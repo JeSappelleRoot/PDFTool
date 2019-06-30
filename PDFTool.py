@@ -179,15 +179,31 @@ def splitFile(file,outSplit,page):
 
             # Initialize reader and writer
             pdfReader = PdfFileReader(streamIn)
+            nbPage = pdfReader.getNumPages()
             pdfWriter = PdfFileWriter()
-            # Read needed page (-1 because number begin at 0...like an index...)
-            pdfWriter.addPage(pdfReader.getPage(page-1))
-            # Define a name for outfile, based of the page number
-            nameOut = f"Page_{page}.pdf"
 
-            # Finally write the output file in the output folder
-            with open(f"{outSplit}/{nameOut}", 'wb') as streamOut:
-                pdfWriter.write(streamOut)
+            if page != 'all':
+                # Read needed page (-1 because number begin at 0...like an index...)
+                pdfWriter.addPage(pdfReader.getPage(int(page) - 1))
+                # Define a name for outfile, based of the page number
+                nameOut = f"Page_{page}.pdf"
+
+                # Finally write the output file in the output folder
+                with open(f"{outSplit}/{nameOut}", 'wb') as streamOut:
+                    pdfWriter.write(streamOut)
+                    print(f"[+] Successfully write {outSplit}/{nameOut}")
+
+            elif page == 'all':
+                for page in range(nbPage):
+                    # Read needed page (-1 because number begin at 0...like an index...)
+                    pdfWriter.addPage(pdfReader.getPage(int(page)))
+                    # Define a name for outfile, based of the page number
+                    nameOut = f"Page_{page + 1}.pdf"
+
+                    # Finally write the output file in the output folder
+                    with open(f"{outSplit}/{nameOut}", 'wb') as streamOut:
+                        pdfWriter.write(streamOut)
+                        print(f"[+] Successfully write {outSplit}/{nameOut}")
 
     # Except a possible error...
     except Exception as error:
@@ -277,7 +293,7 @@ def checkOutputFolder(path):
 # Used to check an output directory before processing
 
     if not os.path.isdir(path):
-        print(f"[!] The directory {path} does'nt exist")
+        print(f"[!] The directory {path} does'nt exist or is invalid")
         print(f"[!] Check your path")
         return False
     elif os.path.isdir(path):
@@ -411,7 +427,7 @@ mergeParser.add_argument('--mergeOut',help='Destination must be a file (PDF)',re
 splitParser = subParser.add_parser('split',help='Split specific page of PDF file, or all',description=displayBanner())
 splitParser.add_argument('--splitIn',help='Source file to split',required=True)
 splitParser.add_argument('--splitOut', help='Destination folder',required=True)
-splitParser.add_argument('--num',help='The number of page or "all"',required=True)
+splitParser.add_argument('--num',help='The number of page or "all" (all by default)',default='all')
 
 # Extraction subparser
 extractParser = subParser.add_parser('extract',help='Extract text or images from a PDF file',description=displayBanner())
@@ -447,9 +463,20 @@ if args.command == 'merge':
 
 
 
-# Split action
+# ====================================== Split action
 elif args.command == 'split':
-    print('Split !')
+    source = args.splitIn
+    dest = args.splitOut
+    page = args.num
+
+    inputIsValid(source,'pdf')
+    outputIsValid(dest,'folder')
+    splitFile(source, dest, page)
+
+
+
+
+
 # ====================================== Extract action
 elif args.command == 'extract':
     # Assign args to variables
