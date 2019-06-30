@@ -20,29 +20,28 @@ Table of Contents
 # PDFTool
 
 
-PDFTool is a simple tool to manage pdf files, write in Python 3. You can :   
+PDFTool is a simple tool to manage pdf files, write in Python 3. With PDFTool you can :   
 -merge PDF files together  
 -split a PDF to get a specific page or split all pages of a PDF document  
 -extract text or image for a document  
 -get info about a PDF file
 
-Except for the merging action, you can specify a folder. So, PDFTool will loop on each PDF inside the source folder.
-
 ## Requirements
-
 
 PDFTool use the following python modules :
 - `os` to launch system command
+- `re` to use regex search (in getInfo function)
 - `glob` to find all PDF files if a folder is gived in source (`glob.glob(f"{src}/*.pdf")` for example in mergeTool function)
 - `argparse` to parse arguments in command line
 - `PyPDF2` to have fun with PDF files
-
+- `fitz` to extract pictures and text from PDF
+- `Path` from `pathlib` to get parent folder of a file
 ### Requirements file
 ```
 PyPDF2==1.26.0
 PyMuPDF==1.14.16
 ```
-Just run `pip3 install -r requirements.txt` to get all modules needed by PDFTool
+Just run `pip3 install -r requirements.txt` to install all modules needed by PDFTool
 
 # About functionalities of PDFTool
 
@@ -50,13 +49,13 @@ Just run `pip3 install -r requirements.txt` to get all modules needed by PDFTool
 
 The merging function in PDFTool allow to merge many PDF files in a simple output file.
 
-The source must be a folder and not a single file. PDFTool will find all PDF files with `.pdf` extension (using glob.glob module).
+The source must be a folder and **not a single file**. PDFTool will find all PDF files with `.pdf` extension (using Glob module).
 The output file must be a valid PDF file (with the right extension).
 
 **Be sure your files are sorted and organized. PDFTool will merge files successively, in alphabetical order**
 
 Usage examples :  
-`PDFTool.py -merge --mergeIn /home/Doe/source --mergeOut /home/Doe/result.pdf `  
+`PDFTool.py merge --mergeIn /home/Doe/source --mergeOut /home/Doe/result.pdf `  
 
 ```
   _____  _____  ______ _______          _
@@ -83,9 +82,9 @@ PDFTool can split a specific page of a PDF file. You can also use the keyword `a
 
 Usage examples :   
 - Split and extract the 3th page of a document  
-`PDFTool.py -split --splitIn /home/Doe/file.pdf --splitOut /home/Doe/resultFolder/ --num 3`
+`PDFTool.py split --splitIn /home/Doe/file.pdf --splitOut /home/Doe/resultFolder/ --num 3`
 - Split all pages of a document  
-`PDFTool.py -split --splitIn /home/Doe/file.pdf --splitOut /home/Doe/resultFolder/ --num all`
+`PDFTool.py split --splitIn /home/Doe/file.pdf --splitOut /home/Doe/resultFolder/ --num all`
 
 PDFTool will automaticly named the extract page by number of the needed page :   
 -Page_2.pdf for the 2nd page  
@@ -117,6 +116,17 @@ PDFTool will automaticly named the extract page by number of the needed page :
 
 
 ## About extraction
+
+PDFTool can extract text or images from a PDF file.  
+The extraction of text does not work with all PDF, depend of the construction of the file. The layout may not be respected when extract text.   
+The image extraction use the page number and the image number (in the targeted page) to get the output name file. 
+
+Usage examples :  
+* extract text from a PDF file 
+`PDFTool.py extract --extType text --extIn /home/Doe/source/file.pdf --extOut /home/Doe/destination/output.txt` 
+* extract images from a PDF file  
+`PDFTool.py extract --extType img --extIn /home/Doe/source/file.pdf --extOut /home/Doe/destination/`
+
 
 
 ```
@@ -155,9 +165,9 @@ But this method seems to be incomplete. So, with a dictionnary we can get all in
 
 Usage examples :
 - Get info about a single file and dump the result to a TXT file  
-`PDFTool.py -info --infoIn /home/Doe/file.pdf --infoOut /home/Doe/infos.txt`  
+`PDFTool.py info --infoIn /home/Doe/file.pdf --infoOut /home/Doe/infos.txt`  
 - Get info about multiple files in a directory and display it in the console  
-`PDFTool.py -info --infoIn /home/Doe/files/`
+`PDFTool.py info --infoIn /home/Doe/files/`
 
 **By default, the `-info` functionality make the output directly in the console**
 
