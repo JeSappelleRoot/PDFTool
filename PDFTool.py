@@ -241,14 +241,14 @@ def extractImg(file,output):
                     print(f"[!] The file Page{i}_Image{imageCounter}.png yet exist in {output}")
                 else:
                     pix.writePNG(f"{output}/Page{i}_Image{imageCounter}.png")
-                    print(f"[+] Write Page{i}_Image{imageCounter}.png")
+                    print(f"[+] Write {output}/Page{i}_Image{imageCounter}.png")
             else:               # CMYK: convert to RGB first
                 if os.path.isfile(f"{output}/Page{i}_Image{imageCounter}.png"):
                     print(f"[!] The file Page{i}_Image{imageCounter}.png yet exist in {output}")
                 else:
                     pix1 = fitz.Pixmap(fitz.csRGB, pix)
                     pix1.writePNG(f"{output}/Page{i}_Image{imageCounter}.png")
-                    print(f"[+] Write Page{i}_Image{imageCounter}.png")
+                    print(f"[+] Write {output}/Page{i}_Image{imageCounter}.png")
                     pix1 = None
             pix = None
             imageCounter = imageCounter + 1 

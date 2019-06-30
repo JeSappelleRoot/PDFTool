@@ -129,15 +129,13 @@ PDFTool will automaticly named the extract page by number of the needed page :
 
 
     
-[+] Write Page2_Image0.png
-[+] Write Page2_Image1.png
-[+] Write Page4_Image0.png
-[+] Write Page4_Image1.png
-[+] Write Page4_Image2.png
-[+] Write Page5_Image0.png
-[+] Write Page5_Image1.png
-[+] Write Page6_Image0.png
-[+] Write Page6_Image1.png
+[+] Write /home/Doe/destination/Page2_Image0.png
+[+] Write /home/Doe/destination/Page2_Image1.png
+[+] Write /home/Doe/destination/Page4_Image0.png
+[+] Write /home/Doe/destination/Page4_Image1.png
+[+] Write /home/Doe/destination/Page4_Image2.png
+[+] Write /home/Doe/destination/Page5_Image0.png
+
 
 [...]
 ```
