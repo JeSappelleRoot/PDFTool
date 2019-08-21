@@ -209,7 +209,7 @@ def splitFile(file,outSplit,page):
                     # otherwise output add page at each other
                     # E.G page 3 contains page 1-2-3, page 4 contains page1-2-3-4...
                     pdfWriter = PdfFileWriter()
-                    # Read needed page (-1 because number begin at 0...like an index...)
+                    # Read needed page
                     pdfWriter.addPage(pdfReader.getPage(int(page)))
                     # Define a name for outfile, based of the page number
                     nameOut = f"Page_{page + 1}.pdf"
