@@ -57,6 +57,8 @@ def mergerTool(src, dst):
     try:
         # Get all PDF files in source path
         allPDF = glob.glob(f"{src}/*.pdf")
+        # Sort all PDF by name
+        allPDF.sort()
         # If pdfFiles array is empty (no PDF detected), return an error message
         if not allPDF:
             print("[!] Not PDF files detected in source directory")
