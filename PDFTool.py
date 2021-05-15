@@ -6,6 +6,7 @@ import re
 import sys
 import glob
 import fitz
+import tempfile
 from pathlib import Path
 import argparse
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
@@ -291,6 +292,71 @@ def extractText(file,outFile):
             print(f"[+] Text from page {num + 1} writted to {outFile}")
 
     return
+
+# -------------------------------------------------> reverseFile
+def reverseFile(source, dest):
+
+    # Get temporary directory
+    temporary_directory = tempfile.gettempdir()
+    # Create empty list to contain temporary pdf files fullpath
+    temporary_files = []
+
+
+    try:
+
+        # Open source file in read mode
+        with open(source, 'rb') as stream_in:
+            # Create a PDF reader object
+            pdf_reader = PdfFileReader(stream_in)
+            # Get total of pages in the source file
+            nb_page = pdf_reader.getNumPages()
+            print(f"[+] {nb_page} detected in PDF file {source}")
+
+
+            # Loop over total of pages
+            for i in range(nb_page):
+                # Get current page
+                current_page = pdf_reader.getPage(i)
+                # Create a PDF writer object
+                pdf_writer = PdfFileWriter()
+                # Add current page from the loop
+                pdf_writer.addPage(current_page)
+                # Create a temporary file
+                temporary_pdf_file = f"{temporary_directory}/reverse_temp_{i}.pdf"
+                # Append the fullname of the temporary file in a list, to retrieve all PDF files for final merge
+                temporary_files.append(temporary_pdf_file)
+                # Open temporary file in write mode
+                with open(temporary_pdf_file, 'wb') as stream_out:
+                    print(f"  - Writting page {i} in temporary file {temporary_pdf_file}")
+                    # Use PDF writer to write single page
+                    pdf_writer.write(stream_out)
+
+        # Sort temporary PDF files list
+        temporary_files.sort(reverse=True)
+        # Create a PDF merger object
+        pdf_merger = PdfFileMerger()
+
+        # Iterate over temporary files list
+        for file in temporary_files:
+            # Check PDF file
+            if checkPDF(file) == 'pdfOK':
+                # Add each temporary PDF file in the merger
+                pdf_merger.append(file)
+                # Remove merged PDF file
+                os.remove(file)
+
+            elif checkPDF(pdf) != 'pdfOK':
+                print(f"[!] Cannot add {file}, the file can't be read (file won't be deleted)")
+
+        # Open destination PDF file in write mode
+        with open(dest, 'wb') as stream_out:
+            # Write merger content in final PDF file
+            pdf_merger.write(stream_out)
+            print(f"[+] Successfuly created reversed file {dest}")
+
+
+    except Exception as error:
+        print(f"[!] An error occured during PDF file reversing : {error}")
 
 
 
