@@ -310,7 +310,7 @@ def reverseFile(source, dest):
             pdf_reader = PdfFileReader(stream_in)
             # Get total of pages in the source file
             nb_page = pdf_reader.getNumPages()
-            print(f"[+] {nb_page} detected in PDF file {source}")
+            print(f"[+] {nb_page} pages detected in PDF file {source}")
 
 
             # Loop over total of pages
