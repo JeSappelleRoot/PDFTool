@@ -549,3 +549,17 @@ elif args.command == 'info':
     # Finally get info about a PDF file
     getInfo(source,dest)
 
+
+# ====================================== Reverse action
+elif args.command == 'reverse':
+    # Assign args to variables
+    source = args.reverseIn
+    dest = args.reverseOut
+
+    # Check the source file
+    inputIsValid(source, 'pdf')
+    # If output is in file, check the ouput file
+    if dest != 'console':
+        outputIsValid(dest,'file')
+
+    reverseFile(source, dest)
