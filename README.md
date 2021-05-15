@@ -2,15 +2,17 @@ Table of Contents
 =================
 
 
-- [ PDFTool](#pdftool)
-  - [ Requirements](#requirements)
-    - [ Requirements file](#requirements-file)
-    - [ Sources, ideas from...](#sources-ideas-from)
-- [ About functionalities of PDFTool](#about-functionalities-of-pdftool)
-  - [ About merging](#about-merging)
-  - [ About splitting](#about-splitting)
-  - [ About extraction](#about-extraction)
-  - [ About getting info](#about-getting-info)
+- [Table of Contents](#table-of-contents)
+- [PDFTool](#pdftool)
+  - [Requirements](#requirements)
+    - [Requirements file](#requirements-file)
+    - [Sources, ideas from...](#sources-ideas-from)
+- [About functionalities of PDFTool](#about-functionalities-of-pdftool)
+  - [About merging](#about-merging)
+  - [About splitting](#about-splitting)
+  - [About extraction](#about-extraction)
+  - [About getting info](#about-getting-info)
+  - [About reversing a PDF file](#about-reversing-a-pdf-file)
 
 
 
@@ -23,6 +25,7 @@ PDFTool is a simple tool to manage pdf files, write in Python 3. With PDFTool yo
 -split a PDF to get a specific page or split all pages of a PDF document  
 -extract text or image for a document  
 -get info about a PDF file
+-reverse pages from a PDF file
 
 ## Requirements
 
@@ -34,6 +37,7 @@ PDFTool use the following python modules :
 - `PyPDF2` to have fun with PDF files
 - `fitz` to extract pictures and text from PDF
 - `Path` from `pathlib` to get parent folder of a file
+- `filetemp` to detected temporary folder (OS distribution dependency)
 ### Requirements file  
 ```
 PyPDF2==1.26.0
@@ -248,4 +252,39 @@ Total number of pages in document : 12
 
     
 [+] Info successfully dumped to /home/scratch/destination/file.txt
+```
+
+## About reversing a PDF file
+
+PDFTool can reverse a PDF file.  
+A PDF file with pages 1, 2 and 3 will be reversed with pages 3, 2 and 1
+
+Usage example :  
+`PDFTool.py reverse --reverseIn /home/Doe/input.pdf --reverseOut /home/Doe/output.pdf` 
+
+PDFTool will detected default temporary directory with `tempfile.gettempdir()` method. 
+Each pages will be extracted in a temporary PDF file and finally merged but from the last page to the first page.  
+
+**All the temporary PDF files are deleted after merging (only if file is valid for merging**
+
+
+```
+  _____  _____  ______ _______          _
+ |  __ \|  __ \|  ____|__   __|        | |
+ | |__) | |  | | |__     | | ___   ___ | |
+ |  ___/| |  | |  __|    | |/ _ \ / _ \| |
+ | |    | |__| | |       | | (_) | (_) | |
+ |_|    |_____/|_|       |_|\___/ \___/|_|
+
+
+    
+[+] 7 pages detected in PDF file /home/Doe/input.pdf
+  - Writting page 0 in temporary file /tmp/reverse_temp_0.pdf
+  - Writting page 1 in temporary file /tmp/reverse_temp_1.pdf
+  - Writting page 2 in temporary file /tmp/reverse_temp_2.pdf
+  - Writting page 3 in temporary file /tmp/reverse_temp_3.pdf
+  - Writting page 4 in temporary file /tmp/reverse_temp_4.pdf
+  - Writting page 5 in temporary file /tmp/reverse_temp_5.pdf
+  - Writting page 6 in temporary file /tmp/reverse_temp_6.pdf
+[+] Successfuly created reversed file /home/Doe/output.pdf
 ```
