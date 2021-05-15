@@ -459,6 +459,12 @@ infoParser = subParser.add_parser('info',help='Get info about a PDF document',de
 infoParser.add_argument('--infoIn',help='Source file or folder to get info',required=True)
 infoParser.add_argument('--infoOut',help='Destination dump file (display in console by default)',default='console')
 
+# Reverse subparser
+reverseParser = subParser.add_parser('reverse',help='Reverse PDF file pages (1,2,3 will be 3,2,1)',description=displayBanner())
+reverseParser.add_argument('--reverseIn',help='Source must be a file (PDF)',required=True)
+reverseParser.add_argument('--reverseOut',help='Destination must be a file (PDF)',required=True)
+
+
 # Finally parse arguments
 args = parser.parse_args()
 
