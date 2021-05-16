@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
 
 # =========================== Import Section ===========================
-import os
-import re
-import sys
-import glob
-import fitz
-import tempfile
-from pathlib import Path
-import argparse
-import functions
-import engine
-from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 
+import functions
+import argparse
+import engine
+import sys
 
 
 
