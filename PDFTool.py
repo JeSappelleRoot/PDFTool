@@ -405,7 +405,7 @@ if args.command == 'merge':
     # Check the destination file
     functions.OutputIsValid(dest,'pdf')
     # Finally launch the merge
-    MergerTool(source,dest)
+    engine.MergerTool(source,dest)
 
 
 
@@ -421,7 +421,7 @@ elif args.command == 'split':
     # Check the output folder
     functions.OutputIsValid(dest, 'folder')
     # Finally launch the split
-    SplitFile(source, dest, page)
+    engine.SplitFile(source, dest, page)
 
 
 
@@ -439,7 +439,7 @@ elif args.command == 'extract':
         # Check the output folder
         functions.OutputIsValid(dest, 'folder')
         # Finally launch the extraction
-        ExtractImages(source, dest)
+        engine.ExtractImages(source, dest)
 
     # If extract text from PDF file
     elif extractType == 'text':
@@ -448,7 +448,7 @@ elif args.command == 'extract':
         # Check the output file
         functions.OutputIsValid(dest, 'file')
         # Finally launch the extraction
-        ExtractText(source, dest)
+        engine.ExtractText(source, dest)
 
 # ====================================== Info action
 elif args.command == 'info':
@@ -464,7 +464,7 @@ elif args.command == 'info':
         functions.OutputIsValid(dest, 'file')
     
     # Finally get info about a PDF file
-    GetPdfInfo(source, dest)
+    engine.GetPdfInfo(source, dest)
 
 
 # ====================================== Reverse action
@@ -479,4 +479,4 @@ elif args.command == 'reverse':
     if dest != 'console':
         functions.OutputIsValid(dest, 'file')
 
-    ReverseFile(source, dest)
+    engine.ReverseFile(source, dest)
