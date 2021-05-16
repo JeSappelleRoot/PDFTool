@@ -11,10 +11,10 @@ from pathlib import Path
 import argparse
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 
-# -------------------------------------------------> displayBanner
-def displayBanner():
+# -------------------------------------------------> DisplayBanner
+def DisplayBanner():
     
-# Simple function to display a displayBanner
+# Simple function to display a DisplayBanner
 # Can be disabled if you prefer boring console !
 
     os.system('clear')
@@ -30,16 +30,16 @@ def displayBanner():
     """)
     return
 
-# -------------------------------------------------> checkPdf
-def checkPDF(file):
+# -------------------------------------------------> CheckPdf
+def CheckPdf(file):
 # A little function to check if PDF file is Invalid
 # Based only on the capacity of PyPDF2 to correctly open the file passed in argument
 # Added check extension first
     try:
         # Get extension and basename of given file in argument
-        fileExtension = os.path.splitext(file)[1]
+        file_extension = os.path.splitext(file)[1]
         # Simple extension check
-        if fileExtension != '.pdf':
+        if file_extension != '.pdf':
             return 'extensionNONOK'
         else:
             # Open pdf for testing correct reading
@@ -52,40 +52,40 @@ def checkPDF(file):
         return False
 
 # -------------------------------------------------> PDF merger function
-def mergerTool(src, dst):
+def MergerTool(src, dst):
 # Simple function to merge pdf files together
 
     try:
         # Get all PDF files in source path
-        allPDF = glob.glob(f"{src}/*.pdf")
+        all_pdf = glob.glob(f"{src}/*.pdf")
         # Sort all PDF by name
-        allPDF.sort()
+        all_pdf.sort()
         # If pdfFiles array is empty (no PDF detected), return an error message
-        if not allPDF:
+        if not all_pdf:
             print("[!] Not PDF files detected in source directory")
             print(f"[!] Check your source path : {src}")
             return
         # Else if pdfFiles array got only one element (one PDF find)
-        elif len(allPDF) == 1:
+        elif len(all_pdf) == 1:
             print("[!] Only one PDF file detected in source directory")
             print("[!] Cannot merge one PDF file to one PDF...")
             return
 
         # Initialize the merger
-        pdfMerger = PdfFileMerger()
+        pdf_merger = PdfFileMerger()
         # Loop to get all PDF files and add
-        for pdf in allPDF:
+        for pdf in all_pdf:
             # Get PDF basename (because fullname in each loop can be too much)
-            pdfBaseName = os.path.basename(pdf)
-            if checkPDF(pdf) == 'pdfOK':
-                print(f"[+] Adding {pdfBaseName} for merging")
-                pdfMerger.append(pdf)
-            elif checkPDF(pdf) != 'pdfOK':
-                print(f"[!] Cannot add {pdfBaseName}, the file can't be read")
+            pdf_basename = os.path.basename(pdf)
+            if CheckPdf(pdf) == 'pdfOK':
+                print(f"[+] Adding {pdf_basename} for merging")
+                pdf_merger.append(pdf)
+            elif CheckPdf(pdf) != 'pdfOK':
+                print(f"[!] Cannot add {pdf_basename}, the file can't be read")
 
         # Finally write the final PDF to output.pdf file in destination folder
-        with open(f"{dst}",'wb') as finalPDF:
-            pdfMerger.write(finalPDF)
+        with open(f"{dst}",'wb') as final_pdf:
+            pdf_merger.write(final_pdf)
             print(f"\n[+] Successfully writed {dst}")
 
     # Get exception
@@ -96,8 +96,8 @@ def mergerTool(src, dst):
     return
 
 
-# -------------------------------------------------> getInfo
-def getInfo(file,output):
+# -------------------------------------------------> GetPdfInfo
+def GetPdfInfo(file,output):
 # Simple function to get info about a PDF file
 # The method getDocumentInfo does'nt give all informations
 # So, with a dictionnary, we can fix it an we can be sure to get all info !
@@ -106,17 +106,17 @@ def getInfo(file,output):
         # Open file given in argument in RB mode
         with open(file,'rb') as stream:
             # Read file with PdfFileReader
-            readPdf = PdfFileReader(stream)
+            pdf_reader = PdfFileReader(stream)
             # Get all info about the document
-            allInfo = str(readPdf.getDocumentInfo())
+            all_info = str(pdf_reader.getDocumentInfo())
             # Get the number of page...can be usefull
-            nbPage = readPdf.getNumPages()
+            nb_page = pdf_reader.getNumPages()
 
         # Initialization of an empty dictionnary
-        infoArray = {}
+        info_array = {}
         # Process to a loop with multi split
         # This first split get the title of information and the value (Author and the given name)
-        for info in allInfo.split(','):
+        for info in all_info.split(','):
             # This second split give the title of the information (Author, Title...)
             reference = info.split(':')[0]
             # With a regex, we extract only text (exclude [], /, quotes...)
@@ -127,29 +127,29 @@ def getInfo(file,output):
             if value == r": ''" or not value:
                 value = '?'
             # Add key and value in the dictionnary
-            infoArray[key] = value
+            info_array[key] = value
 
         # Add a best output with an header
         header = f"Informations about {os.path.basename(file)}"
         # Repeat a char to have a separator
-        topSeparator = '=' * len(header)
+        top_separator = '=' * len(header)
         # Define a footer section
-        footer = f"Total number of pages in document : {nbPage}"
+        footer = f"Total number of pages in document : {nb_page}"
         # Repeat a char to have a separator in case of multi files
-        bottomSeparator = '-' * len(footer)
+        bottom_separator = '-' * len(footer)
 
         # Default behaviour, display directly in console
         if output == 'console':
 
             # Print header and separator
             print(header)
-            print(topSeparator)
+            print(top_separator)
             # Finally display the content of the dictionnary (keys and values)
-            for key in infoArray.keys():
-                print(f"{key} {infoArray[key]}")
+            for key in info_array.keys():
+                print(f"{key} {info_array[key]}")
             # Print the footer and the bottom separator (with 2 new lines)
             print(footer)
-            print(f"{bottomSeparator}\n\n")
+            print(f"{bottom_separator}\n\n")
 
         # Else if the command line indicate the output is in a log file
         elif output != 'console':
@@ -157,13 +157,13 @@ def getInfo(file,output):
             with open(output,'a') as stream:
                 # Write header and top separator
                 stream.write(f"{header}\n")
-                stream.write(f"{topSeparator}\n")
+                stream.write(f"{top_separator}\n")
                 # Loop on the dictionnary to get keys and values
-                for key in infoArray.keys():
-                    stream.write(f"{key} {infoArray[key]}\n")
+                for key in info_array.keys():
+                    stream.write(f"{key} {info_array[key]}\n")
                 # Finally write the footer and the bottom separator
                 stream.write(f"{footer}\n")
-                stream.write(f"{bottomSeparator}\n\n")
+                stream.write(f"{bottom_separator}\n\n")
                 print(f"[+] Info successfully dumped to {output}")
 
     # Catch a possible error...
@@ -174,22 +174,22 @@ def getInfo(file,output):
 
     return
 
-# -------------------------------------------------> splitFile
-def splitFile(file,outSplit,page):
+# -------------------------------------------------> SplitFile
+def SplitFile(file, out_split, page):
 # Simple function to extract a specific page of a PDF file
     try:
 
         # Open input file in reading mode
-        with open(f"{file}", 'rb') as streamIn:
+        with open(f"{file}", 'rb') as stream_in:
 
             # Initialize reader and writer
-            pdfReader = PdfFileReader(streamIn)
-            nbPage = pdfReader.getNumPages()
-            pdfWriter = PdfFileWriter()
+            pdf_reader = PdfFileReader(stream_in)
+            nb_page = pdf_reader.getNumPages()
+            pdf_writer = PdfFileWriter()
 
             if page != 'all':
-                if int(page) > nbPage:
-                    print(f"[!] The maximum page number allowed for {file} is {nbPage}")
+                if int(page) > nb_page:
+                    print(f"[!] The maximum page number allowed for {file} is {nb_page}")
                     print("[!] Please, specify a lower page number")
                     exit()
                 elif int(page) < 0:
@@ -197,30 +197,30 @@ def splitFile(file,outSplit,page):
                     print(f"[!] Please specify a greater page number")
                     exit()
                 # Read needed page (-1 because number begin at 0...like an index...)
-                pdfWriter.addPage(pdfReader.getPage(int(page) - 1))
-                # Define a name for outfile, based of the page number
-                nameOut = f"Page_{page}.pdf"
+                pdf_writer.addPage(pdf_reader.getPage(int(page) - 1))
+                # Define a name for out_file, based of the page number
+                name_out = f"Page_{page}.pdf"
 
                 # Finally write the output file in the output folder
-                with open(f"{outSplit}/{nameOut}", 'wb') as streamOut:
-                    pdfWriter.write(streamOut)
-                    print(f"[+] Successfully write {outSplit}/{nameOut}")
+                with open(f"{out_split}/{name_out}", 'wb') as stream_out:
+                    pdf_writer.write(stream_out)
+                    print(f"[+] Successfully write {out_split}/{name_out}")
 
             elif page == 'all':
-                for page in range(nbPage):
-                    # Initialize a new pdfWriter for each loop
+                for page in range(nb_page):
+                    # Initialize a new pdf_writer for each loop
                     # otherwise output add page at each other
                     # E.G page 3 contains page 1-2-3, page 4 contains page1-2-3-4...
-                    pdfWriter = PdfFileWriter()
+                    pdf_writer = PdfFileWriter()
                     # Read needed page
-                    pdfWriter.addPage(pdfReader.getPage(int(page)))
-                    # Define a name for outfile, based of the page number
-                    nameOut = f"Page_{page + 1}.pdf"
+                    pdf_writer.addPage(pdf_reader.getPage(int(page)))
+                    # Define a name for out_file, based of the page number
+                    name_out = f"Page_{page + 1}.pdf"
 
                     # Finally write the output file in the output folder
-                    with open(f"{outSplit}/{nameOut}", 'wb') as streamOut:
-                        pdfWriter.write(streamOut)
-                        print(f"[+] Successfully write {outSplit}/{nameOut}")
+                    with open(f"{out_split}/{name_out}", 'wb') as stream_out:
+                        pdf_writer.write(stream_out)
+                        print(f"[+] Successfully write {out_split}/{name_out}")
 
     # Except a possible error...
     except Exception as error:
@@ -230,8 +230,8 @@ def splitFile(file,outSplit,page):
     return
 
 
-# -------------------------------------------------> extractImg
-def extractImg(file,output):
+# -------------------------------------------------> ExtractImages
+def ExtractImages(file, output):
 # Function to extract images from a PDF file
 # All images from PDF will be extracted
 
@@ -240,33 +240,33 @@ def extractImg(file,output):
     # Loop with the max number of page
     for i in range(len(pdf)):
         # Add image counter
-        imageCounter = 0
+        image_counter = 0
         # Get image in the page
         for img in pdf.getPageImageList(i):
             xref = img[0]
             pix = fitz.Pixmap(pdf, xref)
             if pix.n < 5:       # this is GRAY or RGB
-                if os.path.isfile(f"{output}/Page{i}_Image{imageCounter}.png"):
-                    print(f"[!] The file Page{i}_Image{imageCounter}.png yet exist in {output}")
+                if os.path.isfile(f"{output}/Page{i}_Image{image_counter}.png"):
+                    print(f"[!] The file Page{i}_Image{image_counter}.png yet exist in {output}")
                 else:
-                    pix.writePNG(f"{output}/Page{i}_Image{imageCounter}.png")
-                    print(f"[+] Write {output}/Page{i}_Image{imageCounter}.png")
+                    pix.writePNG(f"{output}/Page{i}_Image{image_counter}.png")
+                    print(f"[+] Write {output}/Page{i}_Image{image_counter}.png")
             else:               # CMYK: convert to RGB first
-                if os.path.isfile(f"{output}/Page{i}_Image{imageCounter}.png"):
-                    print(f"[!] The file Page{i}_Image{imageCounter}.png yet exist in {output}")
+                if os.path.isfile(f"{output}/Page{i}_Image{image_counter}.png"):
+                    print(f"[!] The file Page{i}_Image{image_counter}.png yet exist in {output}")
                 else:
                     pix1 = fitz.Pixmap(fitz.csRGB, pix)
-                    pix1.writePNG(f"{output}/Page{i}_Image{imageCounter}.png")
-                    print(f"[+] Write {output}/Page{i}_Image{imageCounter}.png")
+                    pix1.writePNG(f"{output}/Page{i}_Image{image_counter}.png")
+                    print(f"[+] Write {output}/Page{i}_Image{image_counter}.png")
                     pix1 = None
             pix = None
-            imageCounter = imageCounter + 1 
+            image_counter = image_counter + 1 
 
     return
 
 
-# -------------------------------------------------> extractText
-def extractText(file,outFile):
+# -------------------------------------------------> ExtractText
+def ExtractText(file, out_file):
 # Function to extract all text from a PDF file
 # The result can't work very well
 # Depend of the PDF construction
@@ -282,19 +282,19 @@ def extractText(file,outFile):
         text = page.getText()
 
         # Open the output file, in append mode
-        with open(outFile, 'a') as output:
+        with open(out_file, 'a') as output:
             # Define a header to know from where the text is extract
             header = f"========================================== From page {num + 1} ==========================================\n"
             # Write header first
             output.write(header)
             # Finally write the text of the page in the ouput file
             output.write(text)
-            print(f"[+] Text from page {num + 1} writted to {outFile}")
+            print(f"[+] Text from page {num + 1} writted to {out_file}")
 
     return
 
-# -------------------------------------------------> reverseFile
-def reverseFile(source, dest):
+# -------------------------------------------------> ReverseFile
+def ReverseFile(source, dest):
 
     # Get temporary directory
     temporary_directory = tempfile.gettempdir()
@@ -339,13 +339,13 @@ def reverseFile(source, dest):
         # Iterate over temporary files list
         for file in temporary_files:
             # Check PDF file
-            if checkPDF(file) == 'pdfOK':
+            if CheckPdf(file) == 'pdfOK':
                 # Add each temporary PDF file in the merger
                 pdf_merger.append(file)
                 # Remove merged PDF file
                 os.remove(file)
 
-            elif checkPDF(pdf) != 'pdfOK':
+            elif CheckPdf(pdf) != 'pdfOK':
                 print(f"[!] Cannot add {file}, the file can't be read (file won't be deleted)")
 
         # Open destination PDF file in write mode
@@ -360,8 +360,8 @@ def reverseFile(source, dest):
 
 
 
-# -------------------------------------------------> checkInputFile
-def checkInputFile(file):
+# -------------------------------------------------> CheckInputFile
+def CheckInputFile(file):
 # Simple function to check if an input file exist
 # Used in all functionality of the script
 
@@ -372,8 +372,8 @@ def checkInputFile(file):
     elif os.path.isfile(file):
         return True
 
-# -------------------------------------------------> checkOutputFolder
-def checkOutputFolder(path):
+# -------------------------------------------------> CheckOutputFolder
+def CheckOutputFolder(path):
 # Simple function to check if an output folder (in argument) exist
 # Used to check an output directory before processing
 
@@ -384,13 +384,13 @@ def checkOutputFolder(path):
     elif os.path.isdir(path):
         return True
 
-# -------------------------------------------------> inputIsValid
-def inputIsValid(path,typeIn):
+# -------------------------------------------------> InputIsValid
+def InputIsValid(path,type_in):
 # Function to check the input arg 
 # Can check source folder or source file (valid PDF)
 
     # If need to check an input folder
-    if typeIn == 'folder':
+    if type_in == 'folder':
         # If the folder does not exist
         if not os.path.isdir(path):
             print(f"[!] The source folder does not exist")
@@ -398,16 +398,16 @@ def inputIsValid(path,typeIn):
             exit()
 
     # If need to check an input pdf
-    elif typeIn == 'pdf':
+    elif type_in == 'pdf':
         # Get extension and basename of given file in argument
-        fileExtension = os.path.splitext(path)[1]
+        file_extension = os.path.splitext(path)[1]
         # Check if source file exist
         if not os.path.isfile(path):
             print(f"[!] The source file does not exist :")
             print(path)
             exit()
         # Simple extension check
-        elif fileExtension != '.pdf':
+        elif file_extension != '.pdf':
             print("The extension of source file does not match with PDF file :")
             print(path)
             exit()
@@ -425,23 +425,23 @@ def inputIsValid(path,typeIn):
 
     return
 
-# -------------------------------------------------> ouputIsValid
-def outputIsValid(path,typeOut):
+# -------------------------------------------------> OutputIsValid
+def OutputIsValid(path,type_out):
 # Function to check the output (file or folder)
 
     # If need to check an output folder
-    if typeOut == 'folder':
+    if type_out == 'folder':
         # If folder does not exist
         if not os.path.isdir(path):
             print("[!] The output folder does not exist :")
             print(path)
             exit()
     #If need to check an output file
-    elif typeOut == 'file':
+    elif type_out == 'file':
         # Get parent folder of output file
-        parentFolder = Path(path).parent
+        parent_folder = Path(path).parent
         # If the parent folder does not exist
-        if not os.path.isdir(parentFolder):
+        if not os.path.isdir(parent_folder):
             print("[!] The parent folder of output file does not exist :")
             print(path)
             exit()
@@ -453,15 +453,15 @@ def outputIsValid(path,typeOut):
             print(path)
             exit()
     # If need to check an ouput PDF file
-    elif typeOut == 'pdf':
+    elif type_out == 'pdf':
         # Get file extension
-        fileExtension = os.path.splitext(path)[1]
+        file_extension = os.path.splitext(path)[1]
         # If output pdf file haven't got a pdf extension
         if os.path.isdir(path):
             print("[!] Please, specify an output file instead a folder :")
             print(path)
             exit()
-        elif fileExtension != '.pdf':
+        elif file_extension != '.pdf':
             print("The extension of destination file does not match with PDF file :")
             print(path)
             exit()
@@ -504,31 +504,31 @@ description="""PDFTool is a simple tool to manage PDF files.\n
 subParser = parser.add_subparsers(title="command",dest="command")
 
 # Merge subparser
-mergeParser = subParser.add_parser('merge',help='Merge PDF files together',description=displayBanner())
-mergeParser.add_argument('--mergeIn',help='Source must be a folder',required=True)
-mergeParser.add_argument('--mergeOut',help='Destination must be a file (PDF)',required=True)
+merge_parser = subParser.add_parser('merge',help='Merge PDF files together',description=DisplayBanner())
+merge_parser.add_argument('--mergeIn',help='Source must be a folder',required=True)
+merge_parser.add_argument('--mergeOut',help='Destination must be a file (PDF)',required=True)
 
 # Split subparser
-splitParser = subParser.add_parser('split',help='Split specific page of PDF file, or all',description=displayBanner())
-splitParser.add_argument('--splitIn',help='Source file to split',required=True)
-splitParser.add_argument('--splitOut', help='Destination folder',required=True)
-splitParser.add_argument('--num',help='The number of page or "all" (all by default)',default='all')
+split_parser = subParser.add_parser('split',help='Split specific page of PDF file, or all',description=DisplayBanner())
+split_parser.add_argument('--splitIn',help='Source file to split',required=True)
+split_parser.add_argument('--splitOut', help='Destination folder',required=True)
+split_parser.add_argument('--num',help='The number of page or "all" (all by default)',default='all')
 
 # Extraction subparser
-extractParser = subParser.add_parser('extract',help='Extract text or images from a PDF file',description=displayBanner())
-extractParser.add_argument('--extIn', help='Source file or folder for extraction',required=True)
-extractParser.add_argument('--extType', help='Type of the extract',choices=['img','text'],required=True)
-extractParser.add_argument('--extOut',help='Destination file (for text) or folder (for img) for extraction',required=True)
+extract_parser = subParser.add_parser('extract',help='Extract text or images from a PDF file',description=DisplayBanner())
+extract_parser.add_argument('--extIn', help='Source file or folder for extraction',required=True)
+extract_parser.add_argument('--extType', help='Type of the extract',choices=['img','text'],required=True)
+extract_parser.add_argument('--extOut',help='Destination file (for text) or folder (for img) for extraction',required=True)
 
 # Getting info subparser
-infoParser = subParser.add_parser('info',help='Get info about a PDF document',description=displayBanner())
-infoParser.add_argument('--infoIn',help='Source file or folder to get info',required=True)
-infoParser.add_argument('--infoOut',help='Destination dump file (display in console by default)',default='console')
+info_parser = subParser.add_parser('info',help='Get info about a PDF document',description=DisplayBanner())
+info_parser.add_argument('--infoIn',help='Source file or folder to get info',required=True)
+info_parser.add_argument('--infoOut',help='Destination dump file (display in console by default)',default='console')
 
 # Reverse subparser
-reverseParser = subParser.add_parser('reverse',help='Reverse PDF file pages (1,2,3 will be 3,2,1)',description=displayBanner())
-reverseParser.add_argument('--reverseIn',help='Source must be a file (PDF)',required=True)
-reverseParser.add_argument('--reverseOut',help='Destination must be a file (PDF)',required=True)
+reverse_parser = subParser.add_parser('reverse',help='Reverse PDF file pages (1,2,3 will be 3,2,1)',description=DisplayBanner())
+reverse_parser.add_argument('--reverseIn',help='Source must be a file (PDF)',required=True)
+reverse_parser.add_argument('--reverseOut',help='Destination must be a file (PDF)',required=True)
 
 
 # Finally parse arguments
@@ -536,7 +536,7 @@ args = parser.parse_args()
 
 
 # With a banner, it's a better ! ><))))°>
-displayBanner()
+DisplayBanner()
 
 # If no arguments in command line, display help message
 if len(sys.argv)==1:
@@ -550,11 +550,11 @@ if args.command == 'merge':
     dest = args.mergeOut
 
     # Check the source folder
-    inputIsValid(source,'folder')
+    InputIsValid(source,'folder')
     # Check the destination file
-    outputIsValid(dest,'pdf')
+    OutputIsValid(dest,'pdf')
     # Finally launch the merge
-    mergerTool(source,dest)
+    MergerTool(source,dest)
 
 
 
@@ -566,11 +566,11 @@ elif args.command == 'split':
     page = args.num
 
     # Check the input PDF file
-    inputIsValid(source,'pdf')
+    InputIsValid(source, 'pdf')
     # Check the output folder
-    outputIsValid(dest,'folder')
+    OutputIsValid(dest, 'folder')
     # Finally launch the split
-    splitFile(source, dest, page)
+    SplitFile(source, dest, page)
 
 
 
@@ -584,20 +584,20 @@ elif args.command == 'extract':
     # If extract image from PDF file
     if extractType == 'img':
         # Check the input file
-        inputIsValid(source,'pdf')
+        InputIsValid(source, 'pdf')
         # Check the output folder
-        outputIsValid(dest,'folder')
+        OutputIsValid(dest, 'folder')
         # Finally launch the extraction
-        extractImg(source,dest)
+        ExtractImages(source, dest)
 
     # If extract text from PDF file
     elif extractType == 'text':
         # Check the input file
-        inputIsValid(source,'pdf')
+        InputIsValid(source, 'pdf')
         # Check the output file
-        outputIsValid(dest,'file')
+        OutputIsValid(dest, 'file')
         # Finally launch the extraction
-        extractText(source,dest)
+        ExtractText(source, dest)
 
 # ====================================== Info action
 elif args.command == 'info':
@@ -606,14 +606,14 @@ elif args.command == 'info':
     dest = args.infoOut
 
     # Check the source file
-    inputIsValid(source,'pdf')
+    InputIsValid(source, 'pdf')
     
     # If output is in file, check the ouput file
     if dest != 'console':
-        outputIsValid(dest,'file')
+        OutputIsValid(dest, 'file')
     
     # Finally get info about a PDF file
-    getInfo(source,dest)
+    GetPdfInfo(source, dest)
 
 
 # ====================================== Reverse action
@@ -623,9 +623,9 @@ elif args.command == 'reverse':
     dest = args.reverseOut
 
     # Check the source file
-    inputIsValid(source, 'pdf')
+    InputIsValid(source, 'pdf')
     # If output is in file, check the ouput file
     if dest != 'console':
-        outputIsValid(dest,'file')
+        OutputIsValid(dest, 'file')
 
-    reverseFile(source, dest)
+    ReverseFile(source, dest)
