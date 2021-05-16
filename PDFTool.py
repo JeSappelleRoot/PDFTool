@@ -10,6 +10,7 @@ import tempfile
 from pathlib import Path
 import argparse
 import functions
+import engine
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 
 
