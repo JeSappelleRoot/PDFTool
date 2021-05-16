@@ -299,8 +299,8 @@ def ReverseFile(source, dest):
                     # Use PDF writer to write single page
                     pdf_writer.write(stream_out)
 
-        # Sort temporary PDF files list
-        temporary_files.sort(reverse=True)
+        # Reverse list
+        temporary_files = temporary_files[:: -1]
         # Create a PDF merger object
         pdf_merger = PdfFileMerger()
 
